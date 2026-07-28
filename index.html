@@ -8,6 +8,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111B2E'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%23E2E8F0'>ALX</text></svg>" />
 
     <style>
+        /* --- RESET & BASE --- */
         * {
             margin: 0;
             padding: 0;
@@ -77,6 +78,7 @@
             font-weight: 400;
         }
 
+        /* --- DATE SECTION --- */
         .date-section {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -111,6 +113,7 @@
             color: #8896B8;
         }
 
+        /* --- STATS GRID --- */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -157,6 +160,7 @@
         .stat-value.medium { color: #FBBF24; }
         .stat-value.low { color: #F87171; }
 
+        /* --- PROGRESS BAR --- */
         .progress-section {
             margin: 20px 0;
         }
@@ -198,6 +202,7 @@
             margin-top: 4px;
         }
 
+        /* --- WEEKLY CHECKLIST --- */
         .week-selector {
             display: flex;
             gap: 12px;
@@ -263,8 +268,7 @@
         .course-item.completed {
             border-color: #4ADE80;
             background: rgba(74, 222, 128, 0.08);
-            opacity: 0.8;
-            cursor: default;
+            opacity: 0.85;
         }
 
         .course-item.completed .course-name {
@@ -278,11 +282,6 @@
             accent-color: #4ADE80;
             cursor: pointer;
             flex-shrink: 0;
-        }
-
-        .course-item.completed input[type="checkbox"] {
-            cursor: default;
-            opacity: 0.6;
         }
 
         .course-item .course-name {
@@ -339,15 +338,7 @@
             background: #1E2A45;
         }
 
-        .btn.danger {
-            background: #7F1D1D;
-            color: #F87171;
-        }
-
-        .btn.danger:active {
-            background: #5C1414;
-        }
-
+        /* --- INPUT SECTION --- */
         .input-section {
             background: #0B1424;
             border-radius: 12px;
@@ -411,6 +402,7 @@
             background: #22C55E;
         }
 
+        /* --- RECOMMENDATION --- */
         .recommendation {
             margin-top: 16px;
             padding: 14px 16px;
@@ -421,6 +413,7 @@
             color: #CBD5E1;
         }
 
+        /* --- HISTORY --- */
         .history-section {
             margin-top: 20px;
         }
@@ -465,6 +458,7 @@
             font-size: 12px;
         }
 
+        /* --- STATUS BADGE --- */
         .status-badge {
             display: inline-block;
             padding: 3px 12px;
@@ -486,6 +480,7 @@
             color: #F87171;
         }
 
+        /* --- SCROLLBAR --- */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -501,6 +496,7 @@
             background: #4ADE80;
         }
 
+        /* --- RESPONSIVE --- */
         @media (max-width: 400px) {
             body { padding: 10px; }
             .container { padding: 16px 14px; border-radius: 12px; }
@@ -775,7 +771,6 @@
         // Calculate total items across all weeks
         const TOTAL_ITEMS = Object.values(COURSE_ITEMS).reduce((sum, items) => sum + items.length, 0);
         const TOTAL_WEEKS = 14;
-        const TARGET_PER_WEEK = TOTAL_ITEMS / TOTAL_WEEKS;
         const DECAY_FACTOR = 0.15;
 
         // ============================================================
@@ -848,22 +843,35 @@
         }
 
         // ============================================================
-        //  LIKELIHOOD CALCULATION - Based on ALL weeks
+        //  LIKELIHOOD CALCULATION - Based on ALL weeks with item-level tracking
         // ============================================================
 
+        /**
+         * Calculate completion likelihood based on ALL weeks that have passed
+         * Uses item-level completion data for precise tracking
+         * Returns 100% when all items are completed
+         */
         function calculateLikelihoodFromAllWeeks(weeklyHistory, currentWeek) {
+            // If all items are completed, return 100%
+            if (getTotalCompleted() >= TOTAL_ITEMS) {
+                return 100;
+            }
+
             if (!weeklyHistory || weeklyHistory.length === 0) return 100;
 
             let totalItems = 0;
             let totalExpectedItems = 0;
             let totalDeficit = 0;
 
+            // Calculate for each week that has passed
             for (let w = 1; w <= currentWeek; w++) {
+                const maxItems = getMaxItemsForWeek(w);
+                if (maxItems === 0) continue;
+                
                 const weekData = weeklyHistory.find(h => h.week === w);
                 const itemsCompleted = weekData ? (weekData.items || 0) : 0;
-                const maxItems = getMaxItemsForWeek(w);
                 
-                // Expected items for this week (target is to complete all)
+                // Expected items for this week (all available items)
                 const expectedItems = maxItems;
                 
                 // Calculate deficit for this week (items not completed)
@@ -873,21 +881,29 @@
                 totalExpectedItems += expectedItems;
             }
 
+            // If all expected items are completed, return 100%
+            if (totalItems >= totalExpectedItems && totalItems >= TOTAL_ITEMS) {
+                return 100;
+            }
+
             if (totalExpectedItems === 0) return 100;
 
             // Calculate likelihood based on cumulative deficit
-            // Each missed item reduces likelihood by 15%
+            // Each missed item reduces likelihood by DECAY_FACTOR (15%)
             const penalty = totalDeficit * DECAY_FACTOR * 100;
             let likelihood = Math.max(100 - penalty, 0);
 
-            // If learner completed all items, cap at 100%
+            // If learner completed all items so far, cap at 100%
             if (totalItems >= totalExpectedItems) {
-                likelihood = 100;
+                likelihood = Math.min(likelihood + 20, 100);
             }
 
             return Math.round(Math.max(likelihood, 0));
         }
 
+        /**
+         * Calculate overall momentum based on completion rate
+         */
         function calculateOverallMomentum(weeklyHistory, currentWeek) {
             if (!weeklyHistory || weeklyHistory.length === 0) return 0;
 
@@ -910,12 +926,371 @@
 
         function getStatus(likelihood, progress) {
             if (likelihood >= 85 && progress >= 0.2) return { label: 'On Track', class: 'on-track' };
-            if (likelihood >= 50 && progress >= 0.1) return { label: 'Watch', class: 'watch' };
-            return { label: 'Risk', class: 'risk' };
+            if (likelihood >= 70) return { label: 'On Watch', class: 'watch' };
+            return { label: 'At Risk', class: 'risk' };
+        }
+
+        function getRecommendation(likelihood, overallMomentum, predictedEndDate, targetEndDate) {
+            if (likelihood >= 100) return '✅ Excellent! You\'ve completed all items or are on track to finish.';
+            if (likelihood >= 85) return '📈 Good momentum. Keep completing all available items each week.';
+            if (likelihood >= 70) {
+                return `⚠️ You're falling behind. Try to complete all items in your current week.`;
+            }
+            return `🚨 Critical: Focus on completing all available items each week to catch up.`;
         }
 
         // ============================================================
-        //  UI UPDATE FUNCTIONS
+        //  UI UPDATE
         // ============================================================
+
+        function updateModel() {
+            const startDateInput = document.getElementById('startDate').value;
+            const startDate = startDateInput ? new Date(startDateInput) : null;
+            
+            const week = parseInt(document.getElementById('currentWeek').value) || 3;
+
+            state.startDate = startDate;
+            state.currentWeek = week;
+
+            // Build weekly history from completed items
+            const historyMap = {};
+            for (let w = 1; w <= week; w++) {
+                historyMap[w] = getCompletedCountForWeek(w);
+            }
+
+            state.weeklyHistory = Object.entries(historyMap).map(([w, count]) => ({
+                week: parseInt(w),
+                items: count
+            }));
+
+            // Calculate total items
+            const totalCompleted = getTotalCompleted();
+            state.itemsCompleted = Math.min(totalCompleted, TOTAL_ITEMS);
+            
+            // --- Calculate likelihood from ALL weeks ---
+            const newLikelihood = calculateLikelihoodFromAllWeeks(state.weeklyHistory, week);
+            state.likelihood = newLikelihood;
+            
+            // Calculate overall momentum
+            const overallMomentum = calculateOverallMomentum(state.weeklyHistory, week);
+            
+            const progress = (state.itemsCompleted / TOTAL_ITEMS) * 100;
+
+            // Update Date Displays
+            document.getElementById('startDateDisplay').textContent = formatDate(startDate);
+            
+            const targetEnd = calculateTargetEndDate(startDate);
+            document.getElementById('targetEndDateDisplay').textContent = formatDate(targetEnd);
+            if (targetEnd) {
+                document.getElementById('targetEndDateDisplay').style.color = '#8896B8';
+            }
+
+            const predictedEnd = calculatePredictedEndDate(startDate, week, state.itemsCompleted);
+            document.getElementById('predictedEndDateDisplay').textContent = formatDate(predictedEnd);
+            if (predictedEnd) {
+                if (targetEnd && predictedEnd <= targetEnd) {
+                    document.getElementById('predictedEndDateDisplay').style.color = '#4ADE80';
+                } else if (targetEnd) {
+                    document.getElementById('predictedEndDateDisplay').style.color = '#FBBF24';
+                } else {
+                    document.getElementById('predictedEndDateDisplay').style.color = '#FBBF24';
+                }
+            }
+
+            // Likelihood
+            const likelihoodEl = document.getElementById('likelihoodDisplay');
+            likelihoodEl.textContent = newLikelihood + '%';
+            likelihoodEl.className = 'stat-value ' + (newLikelihood >= 85 ? 'high' : newLikelihood >= 70 ? 'medium' : 'low');
+
+            // Momentum
+            document.getElementById('momentumDisplay').textContent = Math.round(overallMomentum) + '%';
+
+            // Items
+            document.getElementById('itemsDisplay').textContent = `${state.itemsCompleted} / ${TOTAL_ITEMS}`;
+
+            // Progress
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+            document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
+
+            // Status
+            const status = getStatus(newLikelihood, progress / 100);
+            document.getElementById('statusDisplay').innerHTML =
+                `<span class="status-badge ${status.class}">${status.label}</span>`;
+
+            // Recommendation
+            document.getElementById('recommendation').textContent = getRecommendation(
+                newLikelihood, 
+                overallMomentum,
+                predictedEnd,
+                targetEnd
+            );
+
+            renderHistory();
+            renderWeekList();
+            saveState();
+        }
+
+        function renderWeekList() {
+            const week = parseInt(document.getElementById('weekSelect').value) || 1;
+            const items = getItemsForWeek(week);
+            const maxItems = items.length;
+            const completedCount = getCompletedCountForWeek(week);
+
+            // Update week info
+            document.getElementById('weekInfo').textContent = `${maxItems} items available`;
+            document.getElementById('weekProgress').textContent = `${completedCount}/${maxItems} completed`;
+
+            const container = document.getElementById('courseList');
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div style="color:#8896B8;text-align:center;padding:20px;">
+                        No items for week ${week}
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                const completed = isItemCompleted(item.id);
+                const completedInThisWeek = completed && getItemWeek(item.id) === week;
+                const isCompleted = completedInThisWeek;
+                
+                return `
+                    <div class="course-item ${isCompleted ? 'completed' : ''}" data-item-id="${item.id}" data-week="${week}">
+                        <input type="checkbox" ${isCompleted ? 'checked' : ''} />
+                        <span class="course-name">${item.name}</span>
+                        <span class="course-type ${item.type}">${item.type}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Add event listeners to checkboxes
+            container.querySelectorAll('.course-item input[type="checkbox"]').forEach((checkbox) => {
+                const item = checkbox.closest('.course-item');
+                const itemId = item.dataset.itemId;
+                const weekNum = parseInt(item.dataset.week);
+
+                checkbox.addEventListener('change', function(e) {
+                    e.stopPropagation();
+                    
+                    if (this.checked) {
+                        // Check if already completed in another week
+                        if (isItemCompleted(itemId)) {
+                            // If completed, don't allow re-checking
+                            this.checked = false;
+                            return;
+                        }
+                        // Mark as completed for this week
+                        completedItems[itemId] = weekNum;
+                    } else {
+                        // Only allow unchecking if completed in this week
+                        if (getItemWeek(itemId) === weekNum) {
+                            delete completedItems[itemId];
+                        } else {
+                            // If completed in another week, don't allow unchecking
+                            this.checked = true;
+                            return;
+                        }
+                    }
+                    
+                    item.classList.toggle('completed', this.checked);
+                    updateModel();
+                });
+
+                // Click on the item toggles checkbox (if not already completed elsewhere)
+                item.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        const cb = this.querySelector('input[type="checkbox"]');
+                        const itemId = this.dataset.itemId;
+                        
+                        // If already completed in another week, prevent toggling
+                        if (isItemCompleted(itemId) && getItemWeek(itemId) !== parseInt(this.dataset.week)) {
+                            return;
+                        }
+                        
+                        cb.checked = !cb.checked;
+                        cb.dispatchEvent(new Event('change'));
+                    }
+                });
+            });
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyList');
+            const history = state.weeklyHistory;
+            
+            if (!history || history.length === 0) {
+                container.innerHTML = '<div style="color:#8896B8;text-align:center;padding:20px;">No data yet</div>';
+                return;
+            }
+
+            // Calculate cumulative likelihood for each week
+            let cumulativeDeficit = 0;
+            
+            container.innerHTML = history.map((h, i) => {
+                const isLast = i === history.length - 1;
+                const items = h.items || 0;
+                const maxItems = getMaxItemsForWeek(h.week);
+                const deficit = Math.max(maxItems - items, 0);
+                cumulativeDeficit += deficit;
+                
+                // Calculate likelihood based on cumulative deficit
+                const weekLikelihood = Math.max(100 - (cumulativeDeficit * DECAY_FACTOR * 100), 0);
+                const roundedLikelihood = Math.round(weekLikelihood);
+                
+                const color = roundedLikelihood >= 85 ? '#4ADE80' : roundedLikelihood >= 70 ? '#FBBF24' : '#F87171';
+                const completionRate = maxItems > 0 ? Math.round((items / maxItems) * 100) : 0;
+                
+                return `
+                    <div class="history-item" style="${isLast ? 'border-left-color: #4ADE80;' : ''}">
+                        <span class="week">Week ${h.week}</span>
+                        <span class="momentum">Items: ${items}/${maxItems} (${completionRate}%)</span>
+                        <span class="likelihood" style="color:${color};">${roundedLikelihood}%</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        //  PERSISTENCE
+        // ============================================================
+
+        function saveState() {
+            try {
+                const data = {
+                    completedItems: completedItems,
+                    state: state
+                };
+                localStorage.setItem('alxPaceData', JSON.stringify(data));
+            } catch (e) { /* ignore */ }
+        }
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('alxPaceData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.completedItems) {
+                        completedItems = data.completedItems;
+                    }
+                    if (data.state) {
+                        state = data.state;
+                        if (state.startDate) {
+                            const dateStr = new Date(state.startDate).toISOString().split('T')[0];
+                            document.getElementById('startDate').value = dateStr;
+                        }
+                        document.getElementById('currentWeek').value = state.currentWeek || 3;
+                        updateModel();
+                        return true;
+                    }
+                }
+            } catch (e) { /* ignore */ }
+            return false;
+        }
+
+        // ============================================================
+        //  INIT & EVENT BINDING
+        // ============================================================
+
+        // Update button
+        document.getElementById('updateBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            updateModel();
+        });
+
+        // Week selector for checklist
+        document.getElementById('weekSelect').addEventListener('change', function() {
+            renderWeekList();
+        });
+
+        // Mark all complete for current week
+        document.getElementById('markAllBtn').addEventListener('click', function() {
+            const week = parseInt(document.getElementById('weekSelect').value) || 1;
+            const items = getItemsForWeek(week);
+            
+            items.forEach(item => {
+                // Only mark if not already completed
+                if (!isItemCompleted(item.id)) {
+                    completedItems[item.id] = week;
+                }
+            });
+            
+            updateModel();
+            renderWeekList();
+        });
+
+        // Unmark all for current week
+        document.getElementById('unmarkAllBtn').addEventListener('click', function() {
+            const week = parseInt(document.getElementById('weekSelect').value) || 1;
+            const items = getItemsForWeek(week);
+            
+            items.forEach(item => {
+                // Only unmark if completed in this week
+                if (getItemWeek(item.id) === week) {
+                    delete completedItems[item.id];
+                }
+            });
+            
+            updateModel();
+            renderWeekList();
+        });
+
+        // Enter key support
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (this.id === 'weekSelect') {
+                        renderWeekList();
+                    } else {
+                        updateModel();
+                    }
+                    this.blur();
+                }
+            });
+            input.addEventListener('change', function() {
+                if (this.id === 'weekSelect') {
+                    renderWeekList();
+                } else if (this.value !== '' && !isNaN(parseFloat(this.value))) {
+                    updateModel();
+                }
+            });
+        });
+
+        // Touch feedback for stats cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.style.borderColor = '#4ADE80';
+            }, { passive: true });
+            card.addEventListener('touchend', function() {
+                this.style.borderColor = '#1E2A45';
+            }, { passive: true });
+        });
+
+        // Load saved state or init
+        if (!loadState()) {
+            // Set default start date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            updateModel();
+            renderWeekList();
+        }
+
+        // Handle resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                renderHistory();
+            }, 250);
+        }, { passive: true });
+
+        console.log('📊 ALX Pace Predictor loaded with item-level tracking.');
+        console.log(`📚 Total items: ${TOTAL_ITEMS} across ${TOTAL_WEEKS} weeks.`);
+        console.log('✅ Likelihood is 100% when all items are completed.');
+    </script>
+</body>
+</html>
 
        
