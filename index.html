@@ -30,7 +30,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- MAIN CONTAINER --- */
         .container {
             max-width: 900px;
             width: 100%;
@@ -81,7 +80,7 @@
             font-weight: 400;
         }
 
-        /* --- STATS GRID (Mobile-first) --- */
+        /* --- STATS GRID --- */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -170,7 +169,134 @@
             margin-top: 4px;
         }
 
-        /* --- INPUT SECTION (Mobile-optimized) --- */
+        /* --- COURSE CHECKLIST --- */
+        .checklist-section {
+            background: #0B1424;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid #1E2A45;
+        }
+
+        .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .checklist-header h3 {
+            font-size: 14px;
+            color: #E2E8F0;
+            font-weight: 600;
+        }
+
+        .checklist-header .week-selector {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .checklist-header .week-selector label {
+            font-size: 12px;
+            color: #8896B8;
+        }
+
+        .checklist-header .week-selector input {
+            width: 60px;
+            padding: 4px 8px;
+            background: #111B2E;
+            border: 1px solid #1E2A45;
+            border-radius: 6px;
+            color: #E2E8F0;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .checklist-header .week-selector input:focus {
+            outline: none;
+            border-color: #4ADE80;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .course-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #111B2E;
+            border-radius: 8px;
+            border: 1px solid #1E2A45;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .course-item:active {
+            transform: scale(0.98);
+        }
+
+        .course-item.completed {
+            border-color: #4ADE80;
+            background: rgba(74, 222, 128, 0.08);
+        }
+
+        .course-item.completed .course-name {
+            color: #4ADE80;
+            text-decoration: line-through;
+        }
+
+        .course-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4ADE80;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .course-item .course-name {
+            font-size: 13px;
+            color: #CBD5E1;
+            flex: 1;
+            transition: color 0.2s;
+        }
+
+        .course-item .course-type {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: #1E2A45;
+            color: #8896B8;
+            flex-shrink: 0;
+        }
+
+        .course-item .course-type.module {
+            background: #1a2a4a;
+            color: #6a8aba;
+        }
+        .course-item .course-type.lesson {
+            background: #1a2a3a;
+            color: #7a8a9a;
+        }
+        .course-item .course-type.check {
+            background: #2a2a1a;
+            color: #baba6a;
+        }
+        .course-item .course-type.test {
+            background: #2a1a1a;
+            color: #ba7a6a;
+        }
+
+        /* --- INPUT SECTION --- */
         .input-section {
             background: #0B1424;
             border-radius: 12px;
@@ -272,6 +398,7 @@
             transition: border-color 0.2s;
             flex-wrap: wrap;
             gap: 4px;
+            cursor: pointer;
         }
 
         .history-item:active {
@@ -288,6 +415,14 @@
         .history-item .momentum {
             color: #8896B8;
             font-size: 12px;
+        }
+        .history-item .courses-done {
+            color: #4ADE80;
+            font-size: 11px;
+            width: 100%;
+            padding-top: 4px;
+            border-top: 1px solid #1E2A45;
+            margin-top: 4px;
         }
 
         /* --- STATUS BADGE --- */
@@ -312,7 +447,7 @@
             color: #F87171;
         }
 
-        /* --- TOUCH-FRIENDLY SCROLLBAR --- */
+        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -328,61 +463,7 @@
             background: #4ADE80;
         }
 
-        /* --- RESPONSIVE BREAKPOINTS --- */
-
-        /* Small phones (portrait) */
-        @media (max-width: 400px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 16px 14px;
-                border-radius: 12px;
-            }
-            .stats-grid {
-                gap: 8px;
-            }
-            .stat-card {
-                padding: 10px 8px;
-                min-height: 70px;
-            }
-            .stat-value {
-                font-size: 20px;
-            }
-            h1 {
-                font-size: 18px;
-            }
-            .alx-icon {
-                width: 34px;
-                height: 34px;
-                font-size: 15px;
-            }
-            .subtitle {
-                font-size: 12px;
-                margin-left: 46px;
-            }
-            .input-section {
-                padding: 12px;
-            }
-            .input-field input {
-                font-size: 15px;
-                padding: 8px 12px;
-            }
-            .btn {
-                font-size: 15px;
-                padding: 10px;
-            }
-            .history-item {
-                font-size: 12px;
-                padding: 8px 12px;
-            }
-            .recommendation {
-                font-size: 13px;
-                padding: 12px 14px;
-            }
-        }
-
-        /* Tablets & small laptops */
+        /* --- RESPONSIVE --- */
         @media (min-width: 600px) {
             body {
                 padding: 24px;
@@ -428,6 +509,9 @@
                 align-self: flex-end;
                 height: 42px;
             }
+            .course-list {
+                grid-template-columns: 1fr 1fr;
+            }
             .stat-card:hover {
                 border-color: #3A4E7A;
                 transform: translateY(-2px);
@@ -436,9 +520,11 @@
             .history-item:hover {
                 border-left-color: #4ADE80;
             }
+            .course-item:hover {
+                border-color: #3A4E7A;
+            }
         }
 
-        /* Large screens */
         @media (min-width: 1024px) {
             .container {
                 padding: 44px 48px;
@@ -459,9 +545,49 @@
             .subtitle {
                 font-size: 15px;
             }
+            .course-list {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
         }
 
-        /* --- LANDSCAPE PHONE SUPPORT --- */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 16px 14px;
+                border-radius: 12px;
+            }
+            .stats-grid {
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 10px 8px;
+                min-height: 70px;
+            }
+            .stat-value {
+                font-size: 20px;
+            }
+            h1 {
+                font-size: 18px;
+            }
+            .alx-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 15px;
+            }
+            .subtitle {
+                font-size: 12px;
+                margin-left: 46px;
+            }
+            .course-item {
+                padding: 6px 10px;
+            }
+            .course-item .course-name {
+                font-size: 12px;
+            }
+        }
+
         @media (max-height: 500px) and (orientation: landscape) {
             body {
                 padding: 10px;
@@ -483,46 +609,33 @@
             .stat-value {
                 font-size: 18px;
             }
-            .header {
-                margin-bottom: 0;
+            .course-list {
+                max-height: 150px;
+                grid-template-columns: 1fr 1fr;
             }
-            .subtitle {
-                margin-bottom: 12px;
-                font-size: 11px;
+            .checklist-section {
+                padding: 10px;
+                margin: 10px 0;
             }
-            .progress-section {
-                margin: 12px 0;
-            }
-            .input-section {
-                padding: 12px;
-                margin: 12px 0;
-            }
-            .input-group {
-                flex-direction: row;
-                gap: 10px;
-            }
-            .input-field input {
-                padding: 6px 10px;
-                font-size: 14px;
-            }
-            .btn {
-                padding: 6px 16px;
-                height: 34px;
-                font-size: 14px;
-                width: auto;
-            }
-            .recommendation {
-                padding: 10px 14px;
+            .checklist-header h3 {
                 font-size: 12px;
-                margin-top: 10px;
             }
-            .history-item {
-                padding: 6px 10px;
+            .course-item {
+                padding: 4px 8px;
+            }
+            .course-item .course-name {
                 font-size: 11px;
             }
         }
 
-        /* --- DARK MODE SAFE (iOS) --- */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         @media (prefers-color-scheme: dark) {
             body {
                 background: #0B1424;
@@ -550,35 +663,14 @@
             .recommendation {
                 background: #0B1424;
             }
-        }
-
-        /* --- REDUCED MOTION --- */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+            .course-item {
+                background: #111B2E;
+                border-color: #1E2A45;
             }
-            .stat-card {
-                transition: none;
+            .checklist-section {
+                background: #0B1424;
+                border-color: #1E2A45;
             }
-            .btn {
-                transition: none;
-            }
-            .progress-bar {
-                transition: none;
-            }
-        }
-
-        /* --- UTILITY --- */
-        .text-center {
-            text-align: center;
-        }
-        .mt-1 {
-            margin-top: 8px;
-        }
-        .mb-1 {
-            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -589,7 +681,7 @@
             <div class="alx-icon" role="img" aria-label="ALX logo">ALX</div>
             <h1>Pace Predictor</h1>
         </div>
-        <div class="subtitle">Predicts course completion likelihood based on weekly momentum</div>
+        <div class="subtitle">Track course completion and predict likelihood of finishing</div>
 
         <!-- STATS GRID -->
         <div class="stats-grid">
@@ -627,6 +719,24 @@
             </div>
         </div>
 
+        <!-- COURSE CHECKLIST -->
+        <div class="checklist-section">
+            <div class="checklist-header">
+                <h3>📚 Courses &amp; Lessons</h3>
+                <div class="week-selector">
+                    <label for="checklistWeek">Week:</label>
+                    <input type="number" id="checklistWeek" value="1" min="1" max="14" />
+                </div>
+            </div>
+            <div class="course-list" id="courseList">
+                <!-- Dynamically populated -->
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn" id="markWeekComplete" style="flex:1; padding: 8px; font-size: 13px;">✓ Mark All Complete</button>
+                <button class="btn" id="clearWeek" style="flex:1; padding: 8px; font-size: 13px; background: #4a4a6a;">✕ Clear Week</button>
+            </div>
+        </div>
+
         <!-- INPUT SECTION -->
         <div class="input-section">
             <div class="input-group">
@@ -654,43 +764,87 @@
                 <span>Likelihood trend</span>
             </div>
             <div id="historyList">
-                <div class="history-item">
-                    <span class="week">Week 1</span>
-                    <span class="momentum">Momentum: 100%</span>
-                    <span class="likelihood" style="color:#4ADE80;">100%</span>
-                </div>
-                <div class="history-item">
-                    <span class="week">Week 2</span>
-                    <span class="momentum">Momentum: 75%</span>
-                    <span class="likelihood" style="color:#FBBF24;">85%</span>
-                </div>
+                <!-- Dynamically populated -->
             </div>
         </div>
     </div>
 
     <script>
         // ============================================================
-        //  CORE MODEL
+        //  COURSE DATA (Based on ALX Pace Roadmap)
         // ============================================================
 
-        const TOTAL_ITEMS = 27;
+        const COURSES = [
+            // DA-1: Data and AI Literacy Foundation (Weeks 1-2)
+            { id: 'welcome', name: 'Welcome to the Data Analytics Program!', type: 'lesson', week: 1 },
+            { id: 'end-module-1', name: 'End of Module: Welcome to the Data Analytics Program!', type: 'module', week: 1 },
+            { id: 'intro-ai', name: 'Introduction to Data and AI Literacy Foundations', type: 'lesson', week: 1 },
+            { id: 'end-module-2', name: 'End of Module: Introduction to Data and AI Literacy Foundations', type: 'module',
+                week: 1 },
+            { id: 'intro-data', name: 'An Introduction to Data and Data Analytics', type: 'lesson', week: 1 },
+            { id: 'check-understanding-1', name: 'Check Your Understanding: Introduction to Data and Data Analytics',
+                type: 'check', week: 1 },
+            { id: 'ways-of-work', name: 'Ways of Work', type: 'lesson', week: 2 },
+            { id: 'check-understanding-2', name: 'Check Your Understanding: Ways of Work', type: 'check', week: 2 },
+            { id: 'graded-test-1', name: 'Graded Test: Ways of Work', type: 'test', week: 2 },
+            { id: 'gen-ai', name: 'Generative AI in Data Practice', type: 'lesson', week: 2 },
+            { id: 'check-understanding-3', name: 'Check Your Understanding: Generative AI in Data Practice', type: 'check',
+                week: 2 },
+            { id: 'graded-test-2', name: 'Graded Test: Generative AI In Data Practice', type: 'test', week: 2 },
+            // Additional courses for weeks 3-14 (placeholder - expand as needed)
+            { id: 'week3-1', name: 'Data Visualization Fundamentals', type: 'lesson', week: 3 },
+            { id: 'week3-2', name: 'Check Your Understanding: Data Visualization', type: 'check', week: 3 },
+            { id: 'week4-1', name: 'Statistical Analysis Basics', type: 'lesson', week: 4 },
+            { id: 'week4-2', name: 'Check Your Understanding: Statistics', type: 'check', week: 4 },
+            { id: 'week5-1', name: 'Python for Data Analytics', type: 'lesson', week: 5 },
+            { id: 'week5-2', name: 'Check Your Understanding: Python', type: 'check', week: 5 },
+            { id: 'week6-1', name: 'Data Wrangling Techniques', type: 'lesson', week: 6 },
+            { id: 'week6-2', name: 'Check Your Understanding: Data Wrangling', type: 'check', week: 6 },
+            { id: 'week7-1', name: 'SQL for Data Analysis', type: 'lesson', week: 7 },
+            { id: 'week7-2', name: 'Check Your Understanding: SQL', type: 'check', week: 7 },
+            { id: 'week8-1', name: 'Business Intelligence Concepts', type: 'lesson', week: 8 },
+            { id: 'week8-2', name: 'Check Your Understanding: BI', type: 'check', week: 8 },
+            { id: 'week9-1', name: 'Machine Learning Introduction', type: 'lesson', week: 9 },
+            { id: 'week9-2', name: 'Check Your Understanding: ML', type: 'check', week: 9 },
+            { id: 'week10-1', name: 'Capstone Project Planning', type: 'lesson', week: 10 },
+            { id: 'week11-1', name: 'Capstone Project Execution', type: 'lesson', week: 11 },
+            { id: 'week12-1', name: 'Capstone Project Review', type: 'lesson', week: 12 },
+            { id: 'week13-1', name: 'Final Presentation Preparation', type: 'lesson', week: 13 },
+            { id: 'week14-1', name: 'Course Completion &amp; Graduation', type: 'lesson', week: 14 },
+        ];
+
+        const TOTAL_ITEMS = COURSES.length;
         const TOTAL_WEEKS = 14;
         const TARGET_PER_WEEK = TOTAL_ITEMS / TOTAL_WEEKS;
         const DECAY_FACTOR = 0.15;
 
+        // ============================================================
+        //  STATE
+        // ============================================================
+
+        // completedCourses: { courseId: weekNumber }
+        let completedCourses = {};
         let state = {
             currentWeek: 3,
-            itemsCompleted: 4,
-            weeklyHistory: [
-                { week: 1, items: 2, likelihood: 100 },
-                { week: 2, items: 2, likelihood: 100 }
-            ],
+            weeklyHistory: [],
             likelihood: 100
         };
 
         // ============================================================
         //  MODEL FUNCTIONS
         // ============================================================
+
+        function getCompletedItemsForWeek(week) {
+            let count = 0;
+            for (const [id, w] of Object.entries(completedCourses)) {
+                if (w === week) count++;
+            }
+            return count;
+        }
+
+        function getTotalCompleted() {
+            return Object.keys(completedCourses).length;
+        }
 
         function calculateMomentum(itemsThisWeek) {
             return Math.min((itemsThisWeek / TARGET_PER_WEEK) * 100, 100);
@@ -718,12 +872,120 @@
         }
 
         // ============================================================
-        //  UI UPDATE
+        //  UI FUNCTIONS
         // ============================================================
+
+        function renderCourseList(week) {
+            const container = document.getElementById('courseList');
+            const courses = COURSES.filter(c => c.week === week);
+
+            if (courses.length === 0) {
+                container.innerHTML =
+                    `<div style="color:#8896B8;text-align:center;padding:20px;">No courses for week ${week}</div>`;
+                return;
+            }
+
+            container.innerHTML = courses.map(course => {
+                const isCompleted = completedCourses[course.id] === week;
+                return `
+                            <div class="course-item ${isCompleted ? 'completed' : ''}" data-course-id="${course.id}" data-week="${week}">
+                                <input type="checkbox" ${isCompleted ? 'checked' : ''} />
+                                <span class="course-name">${course.name}</span>
+                                <span class="course-type ${course.type}">${course.type}</span>
+                            </div>
+                        `;
+            }).join('');
+
+            // Add event listeners to checkboxes
+            container.querySelectorAll('.course-item input[type="checkbox"]').forEach((checkbox, index) => {
+                const item = checkbox.closest('.course-item');
+                const courseId = item.dataset.courseId;
+                const weekNum = parseInt(item.dataset.week);
+
+                checkbox.addEventListener('change', function(e) {
+                    e.stopPropagation();
+                    if (this.checked) {
+                        // Mark as completed for this week
+                        // First, remove from any other week
+                        for (const [id, w] of Object.entries(completedCourses)) {
+                            if (id === courseId) {
+                                delete completedCourses[id];
+                            }
+                        }
+                        completedCourses[courseId] = weekNum;
+                    } else {
+                        delete completedCourses[courseId];
+                    }
+                    item.classList.toggle('completed', this.checked);
+                    updateModel();
+                    saveState();
+                });
+
+                // Click on the item toggles checkbox
+                item.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        const cb = this.querySelector('input[type="checkbox"]');
+                        cb.checked = !cb.checked;
+                        cb.dispatchEvent(new Event('change'));
+                    }
+                });
+            });
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyList');
+            const history = state.weeklyHistory;
+
+            if (history.length === 0) {
+                container.innerHTML = '<div style="color:#8896B8;text-align:center;padding:20px;">No data yet</div>';
+                return;
+            }
+
+            container.innerHTML = history.map((h, i) => {
+                const isLast = i === history.length - 1;
+                const color = h.likelihood >= 85 ? '#4ADE80' : h.likelihood >= 70 ? '#FBBF24' : '#F87171';
+                const momentum = calculateMomentum(h.items);
+                // Get course names for this week
+                const courseNames = [];
+                for (const [id, week] of Object.entries(completedCourses)) {
+                    if (week === h.week) {
+                        const course = COURSES.find(c => c.id === id);
+                        if (course) courseNames.push(course.name);
+                    }
+                }
+                const coursesDisplay = courseNames.length > 0 ?
+                    `<div class="courses-done">📚 ${courseNames.join(', ')}</div>` :
+                    '';
+
+                return `
+                            <div class="history-item" style="${isLast ? 'border-left-color: #4ADE80;' : ''}" data-week="${h.week}">
+                                <span class="week">Week ${h.week}</span>
+                                <span class="momentum">Momentum: ${Math.round(momentum)}%</span>
+                                <span class="likelihood" style="color:${color};">${h.likelihood}%</span>
+                                ${coursesDisplay}
+                            </div>
+                        `;
+            }).join('');
+
+            // Click on history item to load that week's checklist
+            container.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const week = parseInt(this.dataset.week);
+                    if (!isNaN(week)) {
+                        document.getElementById('checklistWeek').value = week;
+                        renderCourseList(week);
+                    }
+                });
+            });
+        }
 
         function updateModel() {
             const week = parseInt(document.getElementById('currentWeek').value) || 3;
-            const itemsThisWeek = parseFloat(document.getElementById('itemsThisWeek').value) || 0;
+            // Calculate items from checklist for this week
+            const itemsThisWeek = getCompletedItemsForWeek(week);
+
+            // Update the items input to reflect actual checklist count
+            document.getElementById('itemsThisWeek').value = itemsThisWeek;
 
             const prevEntry = state.weeklyHistory.length > 0 ? state.weeklyHistory[state.weeklyHistory.length - 1] : null;
             const prevLikelihood = prevEntry ? prevEntry.likelihood : 100;
@@ -734,150 +996,13 @@
             state.currentWeek = week;
             state.likelihood = newLikelihood;
 
-            if (!prevEntry || prevEntry.week !== week) {
-                state.weeklyHistory.push({ week, items: itemsThisWeek, likelihood: Math.round(newLikelihood) });
+            // Update history
+            const existingIndex = state.weeklyHistory.findIndex(h => h.week === week);
+            const entry = { week, items: itemsThisWeek, likelihood: Math.round(newLikelihood) };
+
+            if (existingIndex >= 0) {
+                state.weeklyHistory[existingIndex] = entry;
             } else {
-                prevEntry.items = itemsThisWeek;
-                prevEntry.likelihood = Math.round(newLikelihood);
+                state.weeklyHistory.push(entry);
             }
-
-            let totalItems = 0;
-            state.weeklyHistory.forEach(h => totalItems += h.items);
-            state.itemsCompleted = Math.min(totalItems, TOTAL_ITEMS);
-            const progress = (state.itemsCompleted / TOTAL_ITEMS) * 100;
-
-            // Likelihood
-            const likelihoodEl = document.getElementById('likelihoodDisplay');
-            likelihoodEl.textContent = Math.round(newLikelihood) + '%';
-            likelihoodEl.className = 'stat-value ' + (newLikelihood >= 85 ? 'high' : newLikelihood >= 70 ? 'medium' : 'low');
-
-            // Momentum
-            document.getElementById('momentumDisplay').textContent = Math.round(momentum) + '%';
-
-            // Items
-            document.getElementById('itemsDisplay').textContent = `${state.itemsCompleted} / ${TOTAL_ITEMS}`;
-
-            // Progress
-            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
-            document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
-
-            // Status
-            const status = getStatus(newLikelihood, progress / 100);
-            document.getElementById('statusDisplay').innerHTML =
-                `<span class="status-badge ${status.class}">${status.label}</span>`;
-
-            // Recommendation
-            document.getElementById('recommendation').textContent = getRecommendation(newLikelihood, itemsThisWeek);
-
-            renderHistory();
-            saveState();
-        }
-
-        function renderHistory() {
-            const container = document.getElementById('historyList');
-            const history = state.weeklyHistory;
-            if (history.length === 0) {
-                container.innerHTML = '<div style="color:#8896B8;text-align:center;padding:20px;">No data yet</div>';
-                return;
-            }
-            container.innerHTML = history.map((h, i) => {
-                const isLast = i === history.length - 1;
-                const color = h.likelihood >= 85 ? '#4ADE80' : h.likelihood >= 70 ? '#FBBF24' : '#F87171';
-                const momentum = calculateMomentum(h.items);
-                return `
-                            <div class="history-item" style="${isLast ? 'border-left-color: #4ADE80;' : ''}">
-                                <span class="week">Week ${h.week}</span>
-                                <span class="momentum">Momentum: ${Math.round(momentum)}%</span>
-                                <span class="likelihood" style="color:${color};">${h.likelihood}%</span>
-                            </div>
-                        `;
-            }).join('');
-        }
-
-        // ============================================================
-        //  PERSISTENCE
-        // ============================================================
-
-        function saveState() {
-            try {
-                localStorage.setItem('alxPaceState', JSON.stringify(state));
-            } catch (e) { /* ignore */ }
-        }
-
-        function loadState() {
-            try {
-                const saved = localStorage.getItem('alxPaceState');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (parsed.weeklyHistory && parsed.weeklyHistory.length > 0) {
-                        state = parsed;
-                        document.getElementById('currentWeek').value = state.currentWeek || 3;
-                        const last = state.weeklyHistory[state.weeklyHistory.length - 1];
-                        if (last) {
-                            document.getElementById('itemsThisWeek').value = last.items || 2;
-                        }
-                        updateModel();
-                        return true;
-                    }
-                }
-            } catch (e) { /* ignore */ }
-            return false;
-        }
-
-        // ============================================================
-        //  INIT & EVENT BINDING
-        // ============================================================
-
-        // Update on button click (touch & mouse)
-        document.getElementById('updateBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            updateModel();
-        });
-
-        // Update on Enter key (with passive listener for mobile)
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    updateModel();
-                    this.blur(); // Dismiss keyboard on mobile
-                }
-            });
-            // Debounced update on input change for better UX
-            input.addEventListener('change', function() {
-                // Only update if value is valid
-                if (this.value !== '' && !isNaN(parseFloat(this.value))) {
-                    updateModel();
-                }
-            });
-        });
-
-        // Touch feedback for stats cards
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('touchstart', function() {
-                this.style.borderColor = '#4ADE80';
-            }, { passive: true });
-            card.addEventListener('touchend', function() {
-                this.style.borderColor = '#1E2A45';
-            }, { passive: true });
-        });
-
-        // Load saved state or init
-        if (!loadState()) {
-            updateModel();
-        }
-
-        // Handle orientation change & resize (debounced)
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                // Re-render history to adjust layout if needed
-                renderHistory();
-            }, 250);
-        }, { passive: true });
-
-        console.log('📊 ALX Pace Predictor loaded - Mobile optimized.');
-    </script>
-</body>
-</html>
+            //
