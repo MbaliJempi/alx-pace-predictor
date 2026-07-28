@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>ALX Pace - Completion Predictor</title>
-
-    <!-- Favicon -->
+    <title>ALX Pace · Completion Predictor</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111B2E'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%23E2E8F0'>ALX</text></svg>" />
-
     <style>
-        /* --- RESET & BASE --- */
         * {
             margin: 0;
             padding: 0;
@@ -31,116 +27,134 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 960px;
             width: 100%;
             background: #111B2E;
-            border-radius: 16px;
+            border-radius: 24px;
             padding: 24px 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
             border: 1px solid #1E2A45;
             margin: 0 auto;
+            transition: box-shadow 0.2s;
         }
 
+        /* ---- header ---- */
         .header {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             margin-bottom: 2px;
         }
-
         .alx-icon {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: #0B1424;
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: Arial, sans-serif;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             color: #E2E8F0;
             border: 1.5px solid #2A3A5C;
             flex-shrink: 0;
         }
-
         h1 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            color: #E2E8F0;
             letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #E2E8F0 0%, #A0B4D0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
         .subtitle {
             color: #8896B8;
             margin-bottom: 20px;
-            margin-left: 52px;
+            margin-left: 58px;
             font-size: 13px;
             font-weight: 400;
+            letter-spacing: 0.2px;
         }
 
-        /* --- DATE SECTION --- */
+        /* ---- date cards ---- */
         .date-section {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
-
         .date-card {
             background: #0B1424;
-            border-radius: 12px;
-            padding: 12px 16px;
-            border: 1px solid #1E2A45;
-            text-align: center;
-        }
-
-        .date-card .date-label {
-            font-size: 10px;
-            color: #8896B8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .date-card .date-value {
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 2px;
-            color: #4ADE80;
-        }
-
-        .date-card .date-value.original {
-            color: #8896B8;
-        }
-
-        /* --- STATS GRID --- */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: #0B1424;
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 14px 12px;
             border: 1px solid #1E2A45;
             text-align: center;
             transition: all 0.2s ease;
             cursor: default;
-            min-height: 80px;
+            backdrop-filter: blur(2px);
+        }
+        .date-card:hover {
+            border-color: #4ADE80;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74, 222, 128, 0.08);
+        }
+        .date-card .date-label {
+            font-size: 10px;
+            color: #8896B8;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 600;
+        }
+        .date-card .date-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 4px;
+            color: #4ADE80;
+        }
+        .date-card .date-value.original {
+            color: #8896B8;
+        }
+
+        /* ---- stats grid with hover tooltips ---- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .stat-card {
+            background: #0B1424;
+            border-radius: 14px;
+            padding: 16px 10px;
+            border: 1px solid #1E2A45;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: default;
+            min-height: 88px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
         }
-
-        .stat-card:active {
-            transform: scale(0.97);
+        .stat-card:hover {
             border-color: #4ADE80;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.06);
+            background: #0f1a2e;
         }
-
+        /* subtle tooltip hint */
+        .stat-card .hint {
+            position: absolute;
+            bottom: 6px;
+            right: 10px;
+            font-size: 8px;
+            color: #3A4E7A;
+            opacity: 0.5;
+            letter-spacing: 0.3px;
+            pointer-events: none;
+        }
         .stat-label {
             font-size: 10px;
             color: #8896B8;
@@ -148,24 +162,64 @@
             letter-spacing: 0.5px;
             font-weight: 600;
         }
-
         .stat-value {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
-            margin-top: 2px;
+            margin-top: 4px;
             color: #E2E8F0;
-            word-break: break-word;
         }
-
         .stat-value.high { color: #4ADE80; }
         .stat-value.medium { color: #FBBF24; }
         .stat-value.low { color: #F87171; }
 
-        /* --- PROGRESS BAR --- */
-        .progress-section {
-            margin: 20px 0;
+        /* ---- donut + progress row ---- */
+        .dual-progress {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            margin: 16px 0 18px 0;
+            background: #0B1424;
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid #1E2A45;
         }
-
+        .donut-wrapper {
+            flex: 0 0 72px;
+            text-align: center;
+        }
+        .donut-svg {
+            width: 72px;
+            height: 72px;
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 2px 6px rgba(74, 222, 128, 0.2));
+        }
+        .donut-bg {
+            fill: none;
+            stroke: #1E2A45;
+            stroke-width: 8;
+        }
+        .donut-fg {
+            fill: none;
+            stroke: #4ADE80;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.6s ease;
+        }
+        .donut-label {
+            font-size: 12px;
+            color: #8896B8;
+            margin-top: 2px;
+        }
+        .donut-percent {
+            font-size: 20px;
+            font-weight: 700;
+            fill: #E2E8F0;
+        }
+        .progress-flex {
+            flex: 1;
+            min-width: 140px;
+        }
         .progress-header {
             display: flex;
             justify-content: space-between;
@@ -173,20 +227,17 @@
             color: #8896B8;
             margin-bottom: 4px;
         }
-
         .progress-header span:last-child {
             color: #E2E8F0;
             font-weight: 500;
         }
-
         .progress-bar-container {
             background: #0B1424;
             border-radius: 100px;
-            height: 8px;
+            height: 10px;
             overflow: hidden;
             border: 1px solid #1E2A45;
         }
-
         .progress-bar {
             height: 100%;
             background: #4ADE80;
@@ -194,7 +245,6 @@
             transition: width 0.4s ease;
             width: 0%;
         }
-
         .progress-labels {
             display: flex;
             justify-content: space-between;
@@ -203,25 +253,19 @@
             margin-top: 4px;
         }
 
-        /* --- INPUT SECTION --- */
+        /* ---- input + tabs ---- */
         .input-section {
             background: #0B1424;
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 18px 16px;
             margin: 16px 0;
             border: 1px solid #1E2A45;
         }
-
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
-
-        .input-field {
-            width: 100%;
-        }
-
         .input-field label {
             display: block;
             font-size: 12px;
@@ -229,88 +273,101 @@
             margin-bottom: 4px;
             font-weight: 500;
         }
-
         .input-field input {
             width: 100%;
             padding: 10px 14px;
             background: #111B2E;
             border: 1px solid #1E2A45;
-            border-radius: 8px;
+            border-radius: 10px;
             color: #E2E8F0;
             font-size: 16px;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
             -webkit-appearance: none;
-            appearance: none;
         }
-
         .input-field input:focus {
             outline: none;
             border-color: #4ADE80;
+            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
         }
-
         .btn {
             width: 100%;
             padding: 12px;
             background: #4ADE80;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: #0B1424;
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
             touch-action: manipulation;
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2);
         }
-
+        .btn:hover {
+            background: #3bcb73;
+            transform: scale(0.98);
+            box-shadow: 0 6px 16px rgba(74, 222, 128, 0.3);
+        }
         .btn:active {
-            transform: scale(0.97);
-            background: #22C55E;
+            transform: scale(0.94);
         }
 
-        /* --- RECOMMENDATION --- */
-        .recommendation {
-            margin-top: 16px;
-            padding: 14px 16px;
-            border-radius: 8px;
-            background: #0B1424;
-            border-left: 3px solid #4ADE80;
-            font-size: 14px;
-            color: #CBD5E1;
-        }
-
-        /* --- HISTORY --- */
-        .history-section {
-            margin-top: 20px;
-        }
-
-        .history-header {
+        /* ---- tabs (history / detail) ---- */
+        .tabs {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
+            gap: 4px;
+            margin: 18px 0 10px 0;
+            border-bottom: 1px solid #1E2A45;
+        }
+        .tab {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
             color: #8896B8;
-            font-size: 12px;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            border: none;
+            letter-spacing: 0.3px;
+        }
+        .tab:hover {
+            color: #E2E8F0;
+            background: #1a263e;
+        }
+        .tab.active {
+            color: #4ADE80;
+            background: #0B1424;
+            border-bottom: 2px solid #4ADE80;
+        }
+        .tab-content {
+            display: none;
+            padding: 8px 0 4px 0;
+        }
+        .tab-content.active {
+            display: block;
         }
 
+        /* history list */
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 14px;
             background: #0B1424;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 4px;
             font-size: 13px;
-            border-left: 2px solid #1E2A45;
+            border-left: 3px solid #1E2A45;
             color: #CBD5E1;
-            transition: border-color 0.2s;
+            transition: all 0.15s;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 6px;
         }
-
-        .history-item:active {
+        .history-item:hover {
             border-left-color: #4ADE80;
+            background: #111f34;
         }
-
         .history-item .week {
             color: #8896B8;
             font-weight: 500;
@@ -323,371 +380,349 @@
             font-size: 12px;
         }
 
-        /* --- STATUS BADGE --- */
-        .status-badge {
-            display: inline-block;
-            padding: 3px 12px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
+        /* recommendation */
+        .recommendation {
+            margin-top: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: #0B1424;
+            border-left: 4px solid #4ADE80;
+            font-size: 14px;
+            color: #CBD5E1;
+            transition: border-color 0.3s;
         }
 
+        /* status badge */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+        }
         .status-badge.on-track {
-            background: rgba(74, 222, 128, 0.15);
+            background: rgba(74, 222, 128, 0.18);
             color: #4ADE80;
         }
         .status-badge.watch {
-            background: rgba(251, 191, 36, 0.15);
+            background: rgba(251, 191, 36, 0.18);
             color: #FBBF24;
         }
         .status-badge.risk {
-            background: rgba(248, 113, 113, 0.15);
+            background: rgba(248, 113, 113, 0.18);
             color: #F87171;
         }
 
-        /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+        /* responsive */
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .date-section { grid-template-columns: 1fr 1fr; }
+            .dual-progress { flex-direction: column; align-items: stretch; }
+            .donut-wrapper { flex: 0 0 auto; }
+            .container { padding: 16px; }
+            .subtitle { margin-left: 0; }
         }
-        ::-webkit-scrollbar-track {
-            background: #0B1424;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1E2A45;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4ADE80;
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 400px) {
-            body { padding: 10px; }
-            .container { padding: 16px 14px; border-radius: 12px; }
-            .stats-grid { gap: 8px; }
-            .stat-card { padding: 10px 8px; min-height: 70px; }
-            .stat-value { font-size: 20px; }
-            h1 { font-size: 18px; }
-            .alx-icon { width: 34px; height: 34px; font-size: 15px; }
-            .subtitle { font-size: 12px; margin-left: 46px; }
-            .date-section { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .date-card .date-value { font-size: 13px; }
-            .input-section { padding: 12px; }
-            .input-field input { font-size: 15px; padding: 8px 12px; }
-            .btn { font-size: 15px; padding: 10px; }
-            .history-item { font-size: 12px; padding: 8px 12px; }
-            .recommendation { font-size: 13px; padding: 12px 14px; }
-        }
-
         @media (min-width: 600px) {
-            body { padding: 24px; align-items: center; }
-            .container { padding: 32px 36px; border-radius: 20px; }
-            .date-section { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
-            .stat-card { padding: 18px 16px; min-height: 90px; }
-            .stat-value { font-size: 28px; }
-            h1 { font-size: 26px; }
-            .alx-icon { width: 44px; height: 44px; font-size: 20px; }
-            .subtitle { font-size: 14px; margin-left: 58px; }
-            .input-group { flex-direction: row; gap: 16px; }
+            .input-group { flex-direction: row; gap: 14px; }
             .input-field { flex: 1; }
-            .btn { width: auto; padding: 8px 28px; align-self: flex-end; height: 42px; }
-            .stat-card:hover { border-color: #3A4E7A; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
-            .history-item:hover { border-left-color: #4ADE80; }
+            .btn { width: auto; padding: 8px 28px; align-self: flex-end; height: 44px; }
         }
-
-        @media (min-width: 1024px) {
-            .container { padding: 44px 48px; }
-            .stats-grid { gap: 20px; }
-            .stat-card { padding: 22px 20px; min-height: 100px; }
-            .stat-value { font-size: 32px; }
-            h1 { font-size: 30px; }
-            .subtitle { font-size: 15px; }
-        }
-
-        @media (max-height: 500px) and (orientation: landscape) {
-            body { padding: 10px; align-items: flex-start; }
-            .container { padding: 16px 20px; border-radius: 12px; max-width: 100%; }
-            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
-            .stat-card { min-height: 60px; padding: 8px 6px; }
-            .stat-value { font-size: 18px; }
-            .date-section { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-            .date-card { padding: 8px 10px; }
-            .date-card .date-value { font-size: 12px; }
-            .header { margin-bottom: 0; }
-            .subtitle { margin-bottom: 12px; font-size: 11px; }
-            .progress-section { margin: 12px 0; }
-            .input-section { padding: 12px; margin: 12px 0; }
-            .input-group { flex-direction: row; gap: 10px; }
-            .input-field input { padding: 6px 10px; font-size: 14px; }
-            .btn { padding: 6px 16px; height: 34px; font-size: 14px; width: auto; }
-            .recommendation { padding: 10px 14px; font-size: 12px; margin-top: 10px; }
-            .history-item { padding: 6px 10px; font-size: 11px; }
-        }
-
         @media (prefers-color-scheme: dark) {
             body { background: #0B1424; }
-            .container { background: #111B2E; border-color: #1E2A45; }
-            .stat-card { background: #0B1424; border-color: #1E2A45; }
-            .input-section { background: #0B1424; border-color: #1E2A45; }
-            .input-field input { background: #111B2E; border-color: #1E2A45; color: #E2E8F0; }
-            .history-item { background: #0B1424; }
-            .recommendation { background: #0B1424; }
-            .date-card { background: #0B1424; border-color: #1E2A45; }
         }
-
         @media (prefers-reduced-motion: reduce) {
-            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-            .stat-card { transition: none; }
-            .btn { transition: none; }
-            .progress-bar { transition: none; }
+            * { transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
 <body>
-    <div class="container" id="app">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="alx-icon" role="img" aria-label="ALX logo">ALX</div>
-            <h1>Pace Predictor</h1>
-        </div>
-        <div class="subtitle">Predicts course completion likelihood based on weekly momentum</div>
+<div class="container" id="app">
 
-        <!-- DATE SECTION -->
-        <div class="date-section">
-            <div class="date-card">
-                <div class="date-label">📅 Start Date</div>
-                <div class="date-value original" id="startDateDisplay">Not set</div>
-            </div>
-            <div class="date-card">
-                <div class="date-label">🎯 Target End Date</div>
-                <div class="date-value" id="targetEndDateDisplay">Not set</div>
-            </div>
-            <div class="date-card">
-                <div class="date-label">⏱️ Predicted End Date</div>
-                <div class="date-value" id="predictedEndDateDisplay" style="color:#FBBF24;">Not set</div>
-            </div>
-        </div>
+    <!-- header -->
+    <div class="header">
+        <div class="alx-icon" role="img" aria-label="ALX logo">ALX</div>
+        <h1>Pace Predictor</h1>
+    </div>
+    <div class="subtitle">Predicts completion likelihood · weekly momentum</div>
 
-        <!-- STATS GRID -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Completion Likelihood</div>
-                <div class="stat-value high" id="likelihoodDisplay">100%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Current Momentum</div>
-                <div class="stat-value" id="momentumDisplay" style="color:#E2E8F0;">—</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Status</div>
-                <div id="statusDisplay"><span class="status-badge on-track">On Track</span></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Items Completed</div>
-                <div class="stat-value" id="itemsDisplay" style="color:#E2E8F0;">0 / 27</div>
-            </div>
-        </div>
+    <!-- dates -->
+    <div class="date-section">
+        <div class="date-card"><div class="date-label">📅 Start Date</div><div class="date-value original" id="startDateDisplay">Not set</div></div>
+        <div class="date-card"><div class="date-label">🎯 Target End</div><div class="date-value" id="targetEndDateDisplay">Not set</div></div>
+        <div class="date-card"><div class="date-label">⏱️ Predicted End</div><div class="date-value" id="predictedEndDateDisplay" style="color:#FBBF24;">Not set</div></div>
+    </div>
 
-        <!-- PROGRESS BAR -->
-        <div class="progress-section">
-            <div class="progress-header">
-                <span>Curriculum Progress</span>
-                <span id="progressPercent">0%</span>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progressBar" style="width:0%"></div>
-            </div>
-            <div class="progress-labels">
-                <span>Start</span>
-                <span>Week 7</span>
-                <span>Complete</span>
-            </div>
-        </div>
+    <!-- stats grid with hover hints -->
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Completion Likelihood</div><div class="stat-value high" id="likelihoodDisplay">100%</div><span class="hint">hover</span></div>
+        <div class="stat-card"><div class="stat-label">Current Momentum</div><div class="stat-value" id="momentumDisplay" style="color:#E2E8F0;">—</div><span class="hint">hover</span></div>
+        <div class="stat-card"><div class="stat-label">Status</div><div id="statusDisplay"><span class="status-badge on-track">On Track</span></div><span class="hint">hover</span></div>
+        <div class="stat-card"><div class="stat-label">Items Completed</div><div class="stat-value" id="itemsDisplay" style="color:#E2E8F0;">0 / 27</div><span class="hint">hover</span></div>
+    </div>
 
-        <!-- INPUT SECTION -->
-        <div class="input-section">
-            <div class="input-group">
-                <div class="input-field">
-                    <label for="startDate">Start Date</label>
-                    <input type="date" id="startDate" />
-                </div>
-                <div class="input-field">
-                    <label for="currentWeek">Current Week (1-14)</label>
-                    <input type="number" id="currentWeek" value="3" min="1" max="14" inputmode="numeric" />
-                </div>
-                <div class="input-field">
-                    <label for="itemsThisWeek">Items Completed This Week</label>
-                    <input type="number" id="itemsThisWeek" value="2" min="0" max="10" step="0.5" inputmode="decimal" />
-                </div>
-                <button class="btn" id="updateBtn" aria-label="Update prediction">Update</button>
-            </div>
+    <!-- donut + progress bar -->
+    <div class="dual-progress">
+        <div class="donut-wrapper">
+            <svg class="donut-svg" viewBox="0 0 40 40" aria-label="likelihood donut">
+                <circle class="donut-bg" cx="20" cy="20" r="14" />
+                <circle class="donut-fg" cx="20" cy="20" r="14" stroke-dasharray="0 88" id="donutArc" />
+                <text x="20" y="24" text-anchor="middle" class="donut-percent" id="donutText">100%</text>
+            </svg>
+            <div class="donut-label">Likelihood</div>
         </div>
-
-        <!-- RECOMMENDATION -->
-        <div id="recommendation" class="recommendation">
-            💡 Complete at least 2 items per week to stay on track for completion.
-        </div>
-
-        <!-- HISTORY -->
-        <div class="history-section">
-            <div class="history-header">
-                <span>Weekly History</span>
-                <span>Likelihood trend</span>
-            </div>
-            <div id="historyList">
-                <div class="history-item">
-                    <span class="week">Week 1</span>
-                    <span class="momentum">Momentum: 100%</span>
-                    <span class="likelihood" style="color:#4ADE80;">100%</span>
-                </div>
-                <div class="history-item">
-                    <span class="week">Week 2</span>
-                    <span class="momentum">Momentum: 75%</span>
-                    <span class="likelihood" style="color:#FBBF24;">85%</span>
-                </div>
-            </div>
+        <div class="progress-flex">
+            <div class="progress-header"><span>Curriculum Progress</span><span id="progressPercent">0%</span></div>
+            <div class="progress-bar-container"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+            <div class="progress-labels"><span>Start</span><span>Week 7</span><span>Complete</span></div>
         </div>
     </div>
 
-    <script>
-        // ============================================================
-        //  CORE MODEL
-        // ============================================================
+    <!-- input -->
+    <div class="input-section">
+        <div class="input-group">
+            <div class="input-field"><label for="startDate">Start Date</label><input type="date" id="startDate" /></div>
+            <div class="input-field"><label for="currentWeek">Current Week (1-14)</label><input type="number" id="currentWeek" value="3" min="1" max="14" inputmode="numeric" /></div>
+            <div class="input-field"><label for="itemsThisWeek">Items This Week</label><input type="number" id="itemsThisWeek" value="2" min="0" max="10" step="0.5" inputmode="decimal" /></div>
+            <button class="btn" id="updateBtn">Update</button>
+        </div>
+    </div>
 
-        const TOTAL_ITEMS = 27;
-        const TOTAL_WEEKS = 14;
-        const TARGET_PER_WEEK = TOTAL_ITEMS / TOTAL_WEEKS;
-        const DECAY_FACTOR = 0.15;
+    <!-- tabs -->
+    <div class="tabs">
+        <button class="tab active" data-tab="history">📋 Weekly History</button>
+        <button class="tab" data-tab="insight">📊 Insight</button>
+    </div>
+    <div id="tabHistory" class="tab-content active">
+        <div id="historyList"></div>
+    </div>
+    <div id="tabInsight" class="tab-content">
+        <div id="recommendation" class="recommendation">💡 Complete at least 2 items per week to stay on track.</div>
+    </div>
 
-        let state = {
-            startDate: null,
-            currentWeek: 3,
-            itemsCompleted: 4,
-            weeklyHistory: [
-                { week: 1, items: 2, likelihood: 100 },
-                { week: 2, items: 2, likelihood: 100 }
-            ],
-            likelihood: 100
-        };
+</div>
 
-        // ============================================================
-        //  DATE FUNCTIONS
-        // ============================================================
+<script>
+    // ===== MODEL =====
+    const TOTAL_ITEMS = 27, TOTAL_WEEKS = 14, TARGET_PER_WEEK = TOTAL_ITEMS / TOTAL_WEEKS, DECAY = 0.15;
 
-        function formatDate(date) {
-            if (!date) return 'Not set';
-            const d = new Date(date);
-            return d.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
+    let state = {
+        startDate: null,
+        currentWeek: 3,
+        itemsCompleted: 4,
+        weeklyHistory: [
+            { week: 1, items: 2, likelihood: 100 },
+            { week: 2, items: 2, likelihood: 100 }
+        ],
+        likelihood: 100,
+        momentum: 100,
+        itemsThisWeek: 2
+    };
+
+    // DOM refs
+    const $ = id => document.getElementById(id);
+    const startDateInput = $('startDate');
+    const currentWeekInput = $('currentWeek');
+    const itemsThisWeekInput = $('itemsThisWeek');
+    const updateBtn = $('updateBtn');
+
+    const startDateDisplay = $('startDateDisplay');
+    const targetEndDateDisplay = $('targetEndDateDisplay');
+    const predictedEndDateDisplay = $('predictedEndDateDisplay');
+    const likelihoodDisplay = $('likelihoodDisplay');
+    const momentumDisplay = $('momentumDisplay');
+    const statusDisplay = $('statusDisplay');
+    const itemsDisplay = $('itemsDisplay');
+    const progressBar = $('progressBar');
+    const progressPercent = $('progressPercent');
+    const historyList = $('historyList');
+    const recommendation = $('recommendation');
+    const donutArc = $('donutArc');
+    const donutText = $('donutText');
+
+    // ----- helpers -----
+    function formatDate(d) { if (!d) return 'Not set'; return new Date(d).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }); }
+    function calcTargetEnd(start) { if (!start) return null; const d=new Date(start); d.setDate(d.getDate()+TOTAL_WEEKS*7); return d; }
+    function calcPredictedEnd(start, week, completed) {
+        if (!start) return null;
+        const avg = week>0 ? completed/week : 0;
+        if (avg===0) return calcTargetEnd(start);
+        const remaining = Math.max(TOTAL_ITEMS - completed, 0);
+        const weeksNeeded = remaining / avg;
+        const d = new Date(start);
+        d.setDate(d.getDate() + week*7 + Math.round(weeksNeeded*7));
+        return d;
+    }
+
+    function calcMomentum(items) { return Math.min((items/TARGET_PER_WEEK)*100, 100); }
+
+    function calcLikelihoodFromHistory(history) {
+        if (!history || history.length===0) return 100;
+        let totalDeficit=0;
+        history.forEach(w => { const items=w.items||0; totalDeficit += Math.max(TARGET_PER_WEEK - items, 0); });
+        let likelihood = Math.max(100 - totalDeficit*DECAY*100, 0);
+        const last = history[history.length-1];
+        if (last && last.items >= TARGET_PER_WEEK) likelihood = Math.min(likelihood+10, 100);
+        return Math.round(Math.max(likelihood,0));
+    }
+
+    function getStatus(likelihood, progress) {
+        if (likelihood >= 85 && progress >= 0.15) return { label:'On Track', class:'on-track' };
+        if (likelihood >= 70) return { label:'On Watch', class:'watch' };
+        return { label:'At Risk', class:'risk' };
+    }
+
+    function getRec(likelihood, momentum, predEnd, targetEnd) {
+        if (likelihood >= 100) return '✅ Excellent pace! You\'re on track to complete.';
+        if (likelihood >= 85) return '📈 Good momentum. Keep completing at least 2 items per week.';
+        if (likelihood >= 70) return `⚠️ You're falling behind. Need ${Math.round(TARGET_PER_WEEK*1.8)} items/week to recover.`;
+        return `🚨 Critical: increase pace to ${Math.round(TARGET_PER_WEEK*2.2)} items/week. Adjust schedule.`;
+    }
+
+    // ----- render -----
+    function render() {
+        const start = state.startDate;
+        const week = state.currentWeek || 1;
+        const itemsThis = parseFloat(itemsThisWeekInput.value) || 0;
+        // history includes all weeks up to current
+        const history = state.weeklyHistory;
+        // total completed = sum of history
+        let totalCompleted = 0;
+        history.forEach(w => totalCompleted += (w.items || 0));
+        // if current week is new, add this week's items to history for prediction
+        // but we keep history as stored. we'll compute likelihood based on history + current week
+        const fullHistory = [...history];
+        // ensure we have entry for current week (use itemsThis)
+        const existingIdx = fullHistory.findIndex(w => w.week === week);
+        if (existingIdx >= 0) {
+            fullHistory[existingIdx].items = itemsThis;
+        } else {
+            fullHistory.push({ week: week, items: itemsThis, likelihood: 0 });
         }
+        // sort by week
+        fullHistory.sort((a,b) => a.week - b.week);
+        // compute likelihood based on full history
+        const likelihood = calcLikelihoodFromHistory(fullHistory);
+        const momentum = calcMomentum(itemsThis);
+        const progress = Math.min(totalCompleted / TOTAL_ITEMS, 1);
+        const status = getStatus(likelihood, progress);
+        const targetEnd = calcTargetEnd(start);
+        const predEnd = calcPredictedEnd(start, week, totalCompleted);
 
-        function calculateTargetEndDate(startDate) {
-            if (!startDate) return null;
-            const d = new Date(startDate);
-            d.setDate(d.getDate() + (TOTAL_WEEKS * 7));
-            return d;
-        }
+        // update dom
+        startDateDisplay.textContent = start ? formatDate(start) : 'Not set';
+        targetEndDateDisplay.textContent = targetEnd ? formatDate(targetEnd) : 'Not set';
+        predictedEndDateDisplay.textContent = predEnd ? formatDate(predEnd) : 'Not set';
+        likelihoodDisplay.textContent = likelihood + '%';
+        likelihoodDisplay.className = 'stat-value ' + (likelihood>=85?'high':likelihood>=70?'medium':'low');
+        momentumDisplay.textContent = Math.round(momentum) + '%';
+        momentumDisplay.style.color = momentum>=80?'#4ADE80':momentum>=60?'#FBBF24':'#F87171';
+        statusDisplay.innerHTML = `<span class="status-badge ${status.class}">${status.label}</span>`;
+        itemsDisplay.textContent = `${totalCompleted} / ${TOTAL_ITEMS}`;
 
-        function calculatePredictedEndDate(startDate, currentWeek, itemsCompleted) {
-            if (!startDate) return null;
-            
-            // Calculate average items per week so far
-            const avgPerWeek = currentWeek > 0 ? itemsCompleted / currentWeek : 0;
-            
-            // If no progress, use target
-            if (avgPerWeek === 0) return calculateTargetEndDate(startDate);
-            
-            // Calculate weeks needed to complete remaining items
-            const remainingItems = Math.max(TOTAL_ITEMS - itemsCompleted, 0);
-            const weeksNeeded = remainingItems / avgPerWeek;
-            
-            // Add to current date
-            const d = new Date(startDate);
-            d.setDate(d.getDate() + (currentWeek * 7) + Math.round(weeksNeeded * 7));
-            
-            return d;
-        }
+        const pct = Math.round(progress*100);
+        progressBar.style.width = pct + '%';
+        progressPercent.textContent = pct + '%';
 
-        // ============================================================
-        //  UPDATED MODEL FUNCTIONS - Based on ALL weeks passed
-        // ============================================================
+        // donut
+        const circumference = 88;
+        const offset = circumference - (likelihood/100) * circumference;
+        donutArc.setAttribute('stroke-dasharray', `${circumference - offset} ${circumference}`);
+        donutText.textContent = likelihood + '%';
 
-        /**
-         * Calculate overall momentum based on cumulative performance
-         * This considers ALL weeks that have passed since the start date
-         */
-        function calculateOverallMomentum(weeklyHistory) {
-            if (!weeklyHistory || weeklyHistory.length === 0) return 0;
-            
-            // Calculate average items per week across all weeks
-            let totalItems = 0;
-            let totalWeeks = weeklyHistory.length;
-            
-            weeklyHistory.forEach(week => {
-                totalItems += week.items || 0;
-            });
-            
-            const avgItemsPerWeek = totalItems / totalWeeks;
-            
-            // Calculate momentum based on average vs target
-            return Math.min((avgItemsPerWeek / TARGET_PER_WEEK) * 100, 100);
-        }
+        // history list
+        historyList.innerHTML = '';
+        const displayHistory = fullHistory.slice(0, week);
+        displayHistory.forEach(w => {
+            const li = document.createElement('div');
+            li.className = 'history-item';
+            const lik = calcLikelihoodFromHistory(fullHistory.filter(h => h.week <= w.week));
+            const col = lik>=85?'#4ADE80':lik>=70?'#FBBF24':'#F87171';
+            li.innerHTML = `
+                <span class="week">Week ${w.week}</span>
+                <span class="momentum">${w.items} items</span>
+                <span class="likelihood" style="color:${col};">${lik}%</span>
+            `;
+            historyList.appendChild(li);
+        });
 
-        /**
-         * Calculate completion likelihood based on ALL weeks passed
-         * Uses cumulative deficit across all weeks
-         */
-        function calculateLikelihoodFromHistory(weeklyHistory) {
-            if (!weeklyHistory || weeklyHistory.length === 0) return 100;
-            
-            let likelihood = 100;
-            let totalDeficit = 0;
-            let totalWeeks = 0;
-            
-            // Calculate cumulative deficit across all weeks
-            weeklyHistory.forEach(week => {
-                const items = week.items || 0;
-                const deficit = Math.max(TARGET_PER_WEEK - items, 0);
-                totalDeficit += deficit;
-                totalWeeks++;
-            });
-            
-            // Apply penalty based on total deficit
-            // Each missed item reduces likelihood by 15%
-            const totalPenalty = totalDeficit * DECAY_FACTOR * 100;
-            likelihood = Math.max(100 - totalPenalty, 0);
-            
-            // If the most recent week was above target, allow some recovery
-            const lastWeek = weeklyHistory[weeklyHistory.length - 1];
-            if (lastWeek && lastWeek.items >= TARGET_PER_WEEK) {
-                // Cap at 100% but allow gradual recovery
-                likelihood = Math.min(likelihood + 10, 100);
+        // recommendation
+        recommendation.textContent = getRec(likelihood, momentum, predEnd, targetEnd);
+
+        // store state for next updates
+        state.likelihood = likelihood;
+        state.momentum = momentum;
+        state.itemsCompleted = totalCompleted;
+        state.weeklyHistory = fullHistory;
+    }
+
+    // ----- update from inputs -----
+    function update() {
+        const startVal = startDateInput.value;
+        state.startDate = startVal ? new Date(startVal) : null;
+        state.currentWeek = parseInt(currentWeekInput.value) || 1;
+        const itemsThis = parseFloat(itemsThisWeekInput.value) || 0;
+        state.itemsThisWeek = itemsThis;
+
+        // rebuild history: ensure weeks 1..currentWeek exist with items
+        const newHistory = [];
+        for (let w=1; w<=state.currentWeek; w++) {
+            const existing = state.weeklyHistory.find(h => h.week === w);
+            if (existing) {
+                newHistory.push({ ...existing });
+            } else {
+                newHistory.push({ week: w, items: (w === state.currentWeek ? itemsThis : 0), likelihood: 0 });
             }
-            
-            return Math.round(Math.max(likelihood, 0));
         }
+        // set current week items
+        const last = newHistory[newHistory.length-1];
+        if (last) last.items = itemsThis;
+        state.weeklyHistory = newHistory;
+        render();
+    }
 
-        function calculateMomentum(itemsThisWeek) {
-            return Math.min((itemsThisWeek / TARGET_PER_WEEK) * 100, 100);
-        }
+    // ----- tabs -----
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const target = this.dataset.tab;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            if (target === 'history') $('tabHistory').classList.add('active');
+            else $('tabInsight').classList.add('active');
+        });
+    });
 
-        function getStatus(likelihood, progress) {
-            if (likelihood >= 85 && progress >= 0.2) return { label: 'On Track', class: 'on-track' };
-            if (likelihood >= 70) return { label: 'On Watch', class: 'watch' };
-            return { label: 'At Risk', class: 'risk' };
-        }
+    // ----- init -----
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth()+1).padStart(2,'0');
+    const day = String(today.getDate()).padStart(2,'0');
+    startDateInput.value = `${year}-${month}-${day}`;
+    state.startDate = today;
 
-        function getRecommendation(likelihood, overallMomentum, predictedEndDate, targetEndDate) {
-            if (likelihood >= 100) return '✅ Excellent pace! You\'re on track to complete the course.';
-            if (likelihood >= 85) return '📈 Good momentum. Keep completing at least 2 items per week.';
-            if (likelihood >= 70) {
-                const neededItems = Math.round(TARGET_PER_WEEK * 2);
-                return `⚠️ You're falling behind. Need ${neededItems} items per week to recover.`;
-            }
-            return `🚨 Critical: Increase your pace to ${Math.round(TARGET_PER_WEEK * 2)} items per week. Consider adjusting your schedule.`;
-        }
+    // set initial history: week1 and week2 with 2 items each
+    state.weeklyHistory = [
+        { week:1, items:2, likelihood:100 },
+        { week:2, items:2, likelihood:100 }
+    ];
+    currentWeekInput.value = 3;
+    itemsThisWeekInput.value = 2;
+    update();
+
+    // events
+    updateBtn.addEventListener('click', update);
+    startDateInput.addEventListener('change', update);
+    currentWeekInput.addEventListener('change', update);
+    itemsThisWeekInput.addEventListener('change', update);
+
+    // extra hover tooltips via title
+    document.querySelectorAll('.stat-card').forEach((card, i) => {
+        const labels = ['Completion likelihood based on weekly momentum', 'Current weekly pace vs target', 'Overall status indicator', 'Total items completed'];
+        if (i < labels.length) card.setAttribute('title', labels[i]);
+    });
+
+    // responsive re-render on resize (for donut)
+    window.addEventListener('resize', render);
+</script>
+</body>
+</html>
