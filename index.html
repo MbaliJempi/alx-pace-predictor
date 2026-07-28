@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALX Pace - Completion Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #e4e7f0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #141b2d;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            border: 1px solid #2a3457;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #6c8cff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #8892b0;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #1a2340;
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid #2a3457;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #8892b0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px;
+            transition: color 0.3s;
+        }
+        .stat-value.high {
+            color: #34d399;
+        }
+        .stat-value.medium {
+            color: #fbbf24;
+        }
+        .stat-value.low {
+            color: #f87171;
+        }
+        .progress-section {
+            margin: 30px 0;
+        }
+        .progress-bar-container {
+            background: #1a2340;
+            border-radius: 100px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6c8cff, #a78bfa);
+            border-radius: 100px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #8892b0;
+            margin-top: 4px;
+        }
+        .input-section {
+            background: #1a2340;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border: 1px solid #2a3457;
+        }
+        .input-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        .input-field {
+            flex: 1;
+            min-width: 130px;
+        }
+        .input-field label {
+            display: block;
+            font-size: 13px;
+            color: #8892b0;
+            margin-bottom: 6px;
+        }
+        .input-field input {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0a0e1a;
+            border: 1px solid #2a3457;
+            border-radius: 8px;
+            color: #e4e7f0;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        .input-field input:focus {
+            outline: none;
+            border-color: #6c8cff;
+        }
+        .btn {
+            padding: 10px 28px;
+            background: linear-gradient(135deg, #6c8cff, #a78bfa);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.2s;
+            height: 42px;
+            align-self: end;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .history-section {
+            margin-top: 24px;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #0a0e1a;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            border-left: 3px solid #6c8cff;
+        }
+        .history-item .week {
+            color: #8892b0;
+        }
+        .history-item .likelihood {
+            font-weight: 600;
+        }
+        .history-item .momentum {
+            color: #8892b0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-badge.on-track {
+            background: #064e3b;
+            color: #34d399;
+        }
+        .status-badge.watch {
+            background: #78350f;
+            color: #fbbf24;
+        }
+        .status-badge.risk {
+            background: #7f1d1d;
+            color: #f87171;
+        }
+        .recommendation {
+            margin-top: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            background: #0a0e1a;
+            border-left: 4px solid #6c8cff;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e4e7f0;
+        }
+        .embed-note {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: #1a2340;
+            border-radius: 10px;
+            border: 1px solid #2a3457;
+            font-size: 13px;
+            color: #8892b0;
+        }
+        .embed-note code {
+            background: #0a0e1a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #e4e7f0;
+            font-size: 12px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+                align-self: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <h1>📊 ALX Pace Predictor</h1>
+        <div class="subtitle">Predicts course completion likelihood based on weekly momentum</div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Completion Likelihood</div>
+                <div class="stat-value high" id="likelihoodDisplay">100%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Momentum</div>
+                <div class="stat-value" id="momentumDisplay" style="color:#e4e7f0;">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Status</div>
+                <div id="statusDisplay"><span class="status-badge on-track">On Track</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Items Completed</div>
+                <div class="stat-value" id="itemsDisplay" style="color:#e4e7f0;">0 / 27</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div style="display:flex; justify-content:space-between; font-size:14px;">
+                <span>Curriculum Progress</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width:0%"></div>
+            </div>
+            <div class="progress-labels">
+                <span>Start</span>
+                <span>Week 7</span>
+                <span>Complete</span>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <div class="input-field">
+                    <label>Current Week (1-14)</label>
+                    <input type="number" id="currentWeek" value="3" min="1" max="14">
+                </div>
+                <div class="input-field">
+                    <label>Items Completed This Week</label>
+                    <input type="number" id="itemsThisWeek" value="2" min="0" max="10" step="0.5">
+                </div>
+                <button class="btn" onclick="updateModel()">Update Prediction</button>
+            </div>
+        </div>
+
+        <div id="recommendation" class="recommendation">
+            💡 Complete at least 2 items per week to stay on track for completion.
+        </div>
+
+        <div class="history-section">
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                <span style="font-weight:600;">Weekly History</span>
+                <span style="color:#8892b0; font-size:13px;">Likelihood trend</span>
+            </div>
+            <div id="historyList">
+                <div class="history-item">
+                    <span class="week">Week 1</span>
+                    <span class="momentum">Momentum: 100%</span>
+                    <span class="likelihood" style="color:#34d399;">100%</span>
+                </div>
+                <div class="history-item">
+                    <span class="week">Week 2</span>
+                    <span class="momentum">Momentum: 75%</span>
+                    <span class="likelihood" style="color:#fbbf24;">85%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="embed-note">
+            💡 <strong>Bookmark this page</strong> to track your progress. 
+            Or <a href="#" id="embedLink" style="color:#6c8cff;text-decoration:none;">embed this predictor</a> into the ALX Pace page using the userscript.
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  CORE MODEL
+        // ============================================================
+
+        const TOTAL_ITEMS = 27;
+        const TOTAL_WEEKS = 14;
+        const TARGET_PER_WEEK = TOTAL_ITEMS / TOTAL_WEEKS;
+        const DECAY_FACTOR = 0.15;
+
+        let state = {
+            currentWeek: 3,
+            itemsCompleted: 4,
+            weeklyHistory: [
+                { week: 1, items: 2, likelihood: 100 },
+                { week: 2, items: 2, likelihood: 100 }
+            ],
+            likelihood: 100
+        };
+
+        // ============================================================
+        //  MODEL FUNCTIONS
+        // ============================================================
+
+        function calculateMomentum(itemsThisWeek) {
+            return Math.min((itemsThisWeek / TARGET_PER_WEEK) * 100, 100);
+        }
+
+        function predictLikelihood(prevLikelihood, itemsThisWeek) {
+            const momentum = calculateMomentum(itemsThisWeek);
+            if (momentum >= 100) return 100;
+            const deficit = Math.max(TARGET_PER_WEEK - itemsThisWeek, 0);
+            const penalty = deficit * DECAY_FACTOR * 100;
+            return Math.max(prevLikelihood - penalty, 0);
+        }
+
+        function getStatus(likelihood, progress) {
+            if (likelihood >= 85 && progress >= 0.2) return { label: 'On Track', class: 'on-track' };
+            if (likelihood >= 70) return { label: 'On Watch', class: 'watch' };
+            return { label: 'At Risk', class: 'risk' };
+        }
+
+        function getRecommendation(likelihood, itemsThisWeek) {
+            if (likelihood >= 100) return '✅ Excellent pace! Keep maintaining 2+ items per week.';
+            if (likelihood >= 85) return '📈 Good momentum. Complete at least 2 items this week to stay on track.';
+            if (likelihood >= 70) return `⚠️ You're falling behind. Need ${Math.round(TARGET_PER_WEEK * 2)} items in the next 2 weeks to recover.`;
+            return `🚨 Critical: Complete ${Math.round(TARGET_PER_WEEK * 2)} items per week to get back on track.`;
+        }
+
+        // ============================================================
+        //  UI UPDATE
+        // ============================================================
+
+        function updateModel() {
+            const week = parseInt(document.getElementById('currentWeek').value) || 3;
+            const itemsThisWeek = parseFloat(document.getElementById('itemsThisWeek').value) || 0;
+
+            const prevEntry = state.weeklyHistory.length > 0 ? state.weeklyHistory[state.weeklyHistory.length - 1] : null;
+            const prevLikelihood = prevEntry ? prevEntry.likelihood : 100;
+
+            const newLikelihood = predictLikelihood(prevLikelihood, itemsThisWeek);
+            const momentum = calculateMomentum(itemsThisWeek);
+
+            state.currentWeek = week;
+            state.likelihood = newLikelihood;
+
+            if (!prevEntry || prevEntry.week !== week) {
+                state.weeklyHistory.push({ week, items: itemsThisWeek, likelihood: Math.round(newLikelihood) });
+            } else {
+                prevEntry.items = itemsThisWeek;
+                prevEntry.likelihood = Math.round(newLikelihood);
+            }
+
+            let totalItems = 0;
+            state.weeklyHistory.forEach(h => totalItems += h.items);
+            state.itemsCompleted = Math.min(totalItems, TOTAL_ITEMS);
+            const progress = (state.itemsCompleted / TOTAL_ITEMS) * 100;
+
+            // Likelihood
+            const likelihoodEl = document.getElementById('likelihoodDisplay');
+            likelihoodEl.textContent = Math.round(newLikelihood) + '%';
+            likelihoodEl.className = 'stat-value ' + (newLikelihood >= 85 ? 'high' : newLikelihood >= 70 ? 'medium' : 'low');
+
+            // Momentum
+            document.getElementById('momentumDisplay').textContent = Math.round(momentum) + '%';
+
+            // Items
+            document.getElementById('itemsDisplay').textContent = `${state.itemsCompleted} / ${TOTAL_ITEMS}`;
+
+            // Progress
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+            document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
+
+            // Status
+            const status = getStatus(newLikelihood, progress / 100);
+            document.getElementById('statusDisplay').innerHTML =
+                `<span class="status-badge ${status.class}">${status.label}</span>`;
+
+            // Recommendation
+            document.getElementById('recommendation').textContent = getRecommendation(newLikelihood, itemsThisWeek);
+
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyList');
+            const history = state.weeklyHistory;
+            if (history.length === 0) {
+                container.innerHTML = '<div style="color:#8892b0;text-align:center;padding:20px;">No data yet</div>';
+                return;
+            }
+            container.innerHTML = history.map((h, i) => {
+                const isLast = i === history.length - 1;
+                const color = h.likelihood >= 85 ? '#34d399' : h.likelihood >= 70 ? '#fbbf24' : '#f87171';
+                const momentum = calculateMomentum(h.items);
+                return `
+                    <div class="history-item" style="${isLast ? 'border-left-color: #a78bfa;' : ''}">
+                        <span class="week">Week ${h.week}</span>
+                        <span class="momentum">Momentum: ${Math.round(momentum)}%</span>
+                        <span class="likelihood" style="color:${color};">${h.likelihood}%</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') updateModel();
+            });
+        });
+
+        // Save history to localStorage
+        function saveState() {
+            try {
+                localStorage.setItem('alxPaceState', JSON.stringify(state));
+            } catch (e) { /* ignore */ }
+        }
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('alxPaceState');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.weeklyHistory && parsed.weeklyHistory.length > 0) {
+                        state = parsed;
+                        document.getElementById('currentWeek').value = state.currentWeek || 3;
+                        // Restore last week's items
+                        const last = state.weeklyHistory[state.weeklyHistory.length - 1];
+                        if (last) {
+                            document.getElementById('itemsThisWeek').value = last.items || 2;
+                        }
+                        updateModel();
+                        return true;
+                    }
+                }
+            } catch (e) { /* ignore */ }
+            return false;
+        }
+
+        // Auto-save on update
+        const origUpdate = updateModel;
+        updateModel = function() {
+            origUpdate();
+            saveState();
+        };
+
+        // Load saved state or init
+        if (!loadState()) {
+            updateModel();
+        }
+
+        // Embed instructions
+        document.getElementById('embedLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert(
+                'To embed this predictor on the ALX Pace page:\n\n' +
+                '1. Install Tampermonkey browser extension\n' +
+                '2. Create a new userscript with the code from:\n' +
+                '   https://github.com/your-username/alx-pace-predictor\n' +
+                '3. The widget will appear automatically on the ALX Pace page.'
+            );
+        });
+
+        console.log('📊 ALX Pace Predictor loaded!');
+        console.log('Data is saved automatically in your browser.');
+    </script>
+</body>
+</html>
