@@ -2,476 +2,596 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>ALX Pace - Completion Predictor</title>
-    
-    <!-- Favicon: Neon Green "ALX" on Navy Background -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1628'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%2339ff14'>ALX</text></svg>" />
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1628'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%2339ff14'>ALX</text></svg>" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111B2E'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%23E2E8F0'>ALX</text></svg>" />
 
     <style>
-        /* ----- RESET & BASE ----- */
+        /* --- RESET & BASE --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a1628;
-            color: #e4e7f0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0B1424;
+            color: #E2E8F0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-start;
+            padding: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ----- MAIN CONTAINER ----- */
+        /* --- MAIN CONTAINER --- */
         .container {
             max-width: 900px;
             width: 100%;
-            background: #0f1f3a;
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-            border: 1px solid #1a3355;
-            transition: border-color 0.3s ease;
+            background: #111B2E;
+            border-radius: 16px;
+            padding: 24px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1E2A45;
+            margin: 0 auto;
         }
 
-        .container:hover {
-            border-color: #39ff14;
-        }
-
-        /* ----- HEADER with ALX Icon ----- */
+        /* --- HEADER --- */
         .header {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 2px;
         }
 
         .alx-icon {
-            width: 48px;
-            height: 48px;
-            background: #0a1628;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            background: #0B1424;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: Arial, sans-serif;
-            font-size: 22px;
-            font-weight: 900;
-            color: #39ff14;
-            border: 2px solid #39ff14;
+            font-size: 18px;
+            font-weight: 800;
+            color: #E2E8F0;
+            border: 1.5px solid #2A3A5C;
             flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-
-        .alx-icon:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 700;
-            background: linear-gradient(135deg, #39ff14, #7dff6e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #E2E8F0;
+            letter-spacing: -0.3px;
         }
 
         .subtitle {
-            color: #7a8ba8;
-            margin-bottom: 30px;
-            margin-left: 64px;
-            font-size: 14px;
+            color: #8896B8;
+            margin-bottom: 20px;
+            margin-left: 52px;
+            font-size: 13px;
+            font-weight: 400;
         }
 
-        /* ----- STATS GRID with HOVER ----- */
+        /* --- STATS GRID (Mobile-first) --- */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 18px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
-            background: #0a1628;
-            border-radius: 14px;
-            padding: 18px 20px;
-            border: 1px solid #1a3355;
+            background: #0B1424;
+            border-radius: 12px;
+            padding: 14px 12px;
+            border: 1px solid #1E2A45;
             text-align: center;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.2s ease;
             cursor: default;
-            position: relative;
-            overflow: hidden;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        /* Hover Effect */
-        .stat-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            border-color: #39ff14;
-            box-shadow: 0 8px 30px rgba(57, 255, 20, 0.15), inset 0 0 30px rgba(57, 255, 20, 0.05);
-        }
-
-        /* Glow line on hover */
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: #39ff14;
-            transition: all 0.4s ease;
-            transform: translateX(-50%);
-            border-radius: 4px;
-        }
-
-        .stat-card:hover::after {
-            width: 60%;
+        .stat-card:active {
+            transform: scale(0.97);
+            border-color: #4ADE80;
         }
 
         .stat-label {
-            font-size: 11px;
-            color: #7a8ba8;
+            font-size: 10px;
+            color: #8896B8;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .stat-card:hover .stat-label {
-            color: #39ff14;
         }
 
         .stat-value {
-            font-size: 30px;
+            font-size: 24px;
             font-weight: 700;
-            margin-top: 4px;
-            transition: all 0.3s ease;
+            margin-top: 2px;
+            color: #E2E8F0;
+            word-break: break-word;
         }
 
-        .stat-value.high {
-            color: #39ff14;
-        }
-        .stat-value.medium {
-            color: #fbbf24;
-        }
-        .stat-value.low {
-            color: #f87171;
-        }
+        .stat-value.high { color: #4ADE80; }
+        .stat-value.medium { color: #FBBF24; }
+        .stat-value.low { color: #F87171; }
 
-        .stat-card:hover .stat-value {
-            transform: scale(1.05);
-        }
-
-        /* ----- PROGRESS BAR ----- */
+        /* --- PROGRESS BAR --- */
         .progress-section {
-            margin: 30px 0;
+            margin: 20px 0;
         }
 
         .progress-header {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 6px;
+            font-size: 13px;
+            color: #8896B8;
+            margin-bottom: 4px;
         }
 
-        .progress-header span:first-child {
-            color: #a0b4d0;
-        }
         .progress-header span:last-child {
-            color: #39ff14;
-            font-weight: 600;
+            color: #E2E8F0;
+            font-weight: 500;
         }
 
         .progress-bar-container {
-            background: #0a1628;
+            background: #0B1424;
             border-radius: 100px;
-            height: 10px;
+            height: 8px;
             overflow: hidden;
-            border: 1px solid #1a3355;
-            transition: border-color 0.3s ease;
-        }
-
-        .progress-bar-container:hover {
-            border-color: #39ff14;
+            border: 1px solid #1E2A45;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #39ff14, #7dff6e);
+            background: #4ADE80;
             border-radius: 100px;
-            transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: width 0.4s ease;
             width: 0%;
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
         }
 
         .progress-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            color: #4a5a7a;
+            font-size: 10px;
+            color: #5A6A8A;
             margin-top: 4px;
         }
 
-        /* ----- INPUT SECTION ----- */
+        /* --- INPUT SECTION (Mobile-optimized) --- */
         .input-section {
-            background: #0a1628;
-            border-radius: 14px;
-            padding: 24px;
-            margin: 20px 0;
-            border: 1px solid #1a3355;
-            transition: all 0.3s ease;
-        }
-
-        .input-section:hover {
-            border-color: #39ff14;
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.05);
+            background: #0B1424;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid #1E2A45;
         }
 
         .input-group {
             display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            align-items: end;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .input-field {
-            flex: 1;
-            min-width: 130px;
+            width: 100%;
         }
 
         .input-field label {
             display: block;
             font-size: 12px;
-            color: #7a8ba8;
-            margin-bottom: 6px;
+            color: #8896B8;
+            margin-bottom: 4px;
             font-weight: 500;
-            letter-spacing: 0.3px;
-            transition: color 0.3s ease;
-        }
-
-        .input-field:hover label {
-            color: #39ff14;
         }
 
         .input-field input {
             width: 100%;
             padding: 10px 14px;
-            background: #0f1f3a;
-            border: 1px solid #1a3355;
+            background: #111B2E;
+            border: 1px solid #1E2A45;
             border-radius: 8px;
-            color: #e4e7f0;
-            font-size: 15px;
-            transition: all 0.3s ease;
+            color: #E2E8F0;
+            font-size: 16px;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .input-field input:focus {
             outline: none;
-            border-color: #39ff14;
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.08);
-        }
-
-        .input-field input:hover {
-            border-color: #2a4a6a;
+            border-color: #4ADE80;
         }
 
         .btn {
-            padding: 10px 32px;
-            background: linear-gradient(135deg, #39ff14, #2dcc10);
+            width: 100%;
+            padding: 12px;
+            background: #4ADE80;
             border: none;
             border-radius: 8px;
-            color: #0a1628;
+            color: #0B1424;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            height: 42px;
-            align-self: end;
-            letter-spacing: 0.5px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(57, 255, 20, 0.3);
+            transition: all 0.2s ease;
+            touch-action: manipulation;
         }
 
         .btn:active {
-            transform: scale(0.96);
+            transform: scale(0.97);
+            background: #22C55E;
         }
 
-        /* ----- RECOMMENDATION ----- */
+        /* --- RECOMMENDATION --- */
         .recommendation {
             margin-top: 16px;
-            padding: 16px 20px;
-            border-radius: 10px;
-            background: #0a1628;
-            border-left: 4px solid #39ff14;
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: #0B1424;
+            border-left: 3px solid #4ADE80;
             font-size: 14px;
-            line-height: 1.6;
-            color: #c0d0e0;
-            transition: all 0.3s ease;
+            color: #CBD5E1;
         }
 
-        .recommendation:hover {
-            border-left-color: #7dff6e;
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.05);
-        }
-
-        /* ----- HISTORY ----- */
+        /* --- HISTORY --- */
         .history-section {
-            margin-top: 24px;
+            margin-top: 20px;
         }
 
         .history-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .history-header span:first-child {
-            font-weight: 600;
-            color: #c0d0e0;
-        }
-        .history-header span:last-child {
-            color: #7a8ba8;
-            font-size: 13px;
+            margin-bottom: 8px;
+            color: #8896B8;
+            font-size: 12px;
         }
 
         .history-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 16px;
-            background: #0a1628;
+            align-items: center;
+            padding: 10px 14px;
+            background: #0B1424;
             border-radius: 8px;
-            margin-bottom: 6px;
-            font-size: 14px;
-            border-left: 3px solid #1a3355;
-            transition: all 0.3s ease;
+            margin-bottom: 4px;
+            font-size: 13px;
+            border-left: 2px solid #1E2A45;
+            color: #CBD5E1;
+            transition: border-color 0.2s;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
-        .history-item:hover {
-            border-left-color: #39ff14;
-            transform: translateX(4px);
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.05);
+        .history-item:active {
+            border-left-color: #4ADE80;
         }
 
         .history-item .week {
-            color: #7a8ba8;
+            color: #8896B8;
+            font-weight: 500;
         }
         .history-item .likelihood {
             font-weight: 600;
         }
         .history-item .momentum {
-            color: #7a8ba8;
+            color: #8896B8;
+            font-size: 12px;
         }
 
-        /* ----- STATUS BADGE ----- */
+        /* --- STATUS BADGE --- */
         .status-badge {
             display: inline-block;
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 100px;
             font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            transition: all 0.3s ease;
+            font-weight: 600;
         }
 
         .status-badge.on-track {
-            background: rgba(57, 255, 20, 0.15);
-            color: #39ff14;
-            border: 1px solid rgba(57, 255, 20, 0.3);
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ADE80;
         }
-        .status-badge.on-track:hover {
-            background: rgba(57, 255, 20, 0.25);
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
-        }
-
         .status-badge.watch {
             background: rgba(251, 191, 36, 0.15);
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #FBBF24;
         }
-        .status-badge.watch:hover {
-            background: rgba(251, 191, 36, 0.25);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
-        }
-
         .status-badge.risk {
             background: rgba(248, 113, 113, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(248, 113, 113, 0.3);
-        }
-        .status-badge.risk:hover {
-            background: rgba(248, 113, 113, 0.25);
-            box-shadow: 0 0 20px rgba(248, 113, 113, 0.1);
+            color: #F87171;
         }
 
-        /* ----- RESPONSIVE ----- */
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            .input-group {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-                align-self: stretch;
-            }
-            .header h1 {
-                font-size: 22px;
-            }
-            .alx-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            .subtitle {
-                margin-left: 0;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scrollbar styling */
+        /* --- TOUCH-FRIENDLY SCROLLBAR --- */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
+            height: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #0a1628;
+            background: #0B1424;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1a3355;
+            background: #1E2A45;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #39ff14;
+            background: #4ADE80;
+        }
+
+        /* --- RESPONSIVE BREAKPOINTS --- */
+
+        /* Small phones (portrait) */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 16px 14px;
+                border-radius: 12px;
+            }
+            .stats-grid {
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 10px 8px;
+                min-height: 70px;
+            }
+            .stat-value {
+                font-size: 20px;
+            }
+            h1 {
+                font-size: 18px;
+            }
+            .alx-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 15px;
+            }
+            .subtitle {
+                font-size: 12px;
+                margin-left: 46px;
+            }
+            .input-section {
+                padding: 12px;
+            }
+            .input-field input {
+                font-size: 15px;
+                padding: 8px 12px;
+            }
+            .btn {
+                font-size: 15px;
+                padding: 10px;
+            }
+            .history-item {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+            .recommendation {
+                font-size: 13px;
+                padding: 12px 14px;
+            }
+        }
+
+        /* Tablets & small laptops */
+        @media (min-width: 600px) {
+            body {
+                padding: 24px;
+                align-items: center;
+            }
+            .container {
+                padding: 32px 36px;
+                border-radius: 20px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+            .stat-card {
+                padding: 18px 16px;
+                min-height: 90px;
+            }
+            .stat-value {
+                font-size: 28px;
+            }
+            h1 {
+                font-size: 26px;
+            }
+            .alx-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+            .subtitle {
+                font-size: 14px;
+                margin-left: 58px;
+            }
+            .input-group {
+                flex-direction: row;
+                gap: 16px;
+            }
+            .input-field {
+                flex: 1;
+            }
+            .btn {
+                width: auto;
+                padding: 8px 28px;
+                align-self: flex-end;
+                height: 42px;
+            }
+            .stat-card:hover {
+                border-color: #3A4E7A;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            .history-item:hover {
+                border-left-color: #4ADE80;
+            }
+        }
+
+        /* Large screens */
+        @media (min-width: 1024px) {
+            .container {
+                padding: 44px 48px;
+            }
+            .stats-grid {
+                gap: 20px;
+            }
+            .stat-card {
+                padding: 22px 20px;
+                min-height: 100px;
+            }
+            .stat-value {
+                font-size: 32px;
+            }
+            h1 {
+                font-size: 30px;
+            }
+            .subtitle {
+                font-size: 15px;
+            }
+        }
+
+        /* --- LANDSCAPE PHONE SUPPORT --- */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+            }
+            .container {
+                padding: 16px 20px;
+                border-radius: 12px;
+                max-width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            .stat-card {
+                min-height: 60px;
+                padding: 8px 6px;
+            }
+            .stat-value {
+                font-size: 18px;
+            }
+            .header {
+                margin-bottom: 0;
+            }
+            .subtitle {
+                margin-bottom: 12px;
+                font-size: 11px;
+            }
+            .progress-section {
+                margin: 12px 0;
+            }
+            .input-section {
+                padding: 12px;
+                margin: 12px 0;
+            }
+            .input-group {
+                flex-direction: row;
+                gap: 10px;
+            }
+            .input-field input {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+            .btn {
+                padding: 6px 16px;
+                height: 34px;
+                font-size: 14px;
+                width: auto;
+            }
+            .recommendation {
+                padding: 10px 14px;
+                font-size: 12px;
+                margin-top: 10px;
+            }
+            .history-item {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+        }
+
+        /* --- DARK MODE SAFE (iOS) --- */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #0B1424;
+            }
+            .container {
+                background: #111B2E;
+                border-color: #1E2A45;
+            }
+            .stat-card {
+                background: #0B1424;
+                border-color: #1E2A45;
+            }
+            .input-section {
+                background: #0B1424;
+                border-color: #1E2A45;
+            }
+            .input-field input {
+                background: #111B2E;
+                border-color: #1E2A45;
+                color: #E2E8F0;
+            }
+            .history-item {
+                background: #0B1424;
+            }
+            .recommendation {
+                background: #0B1424;
+            }
+        }
+
+        /* --- REDUCED MOTION --- */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .stat-card {
+                transition: none;
+            }
+            .btn {
+                transition: none;
+            }
+            .progress-bar {
+                transition: none;
+            }
+        }
+
+        /* --- UTILITY --- */
+        .text-center {
+            text-align: center;
+        }
+        .mt-1 {
+            margin-top: 8px;
+        }
+        .mb-1 {
+            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
     <div class="container" id="app">
-        <!-- HEADER with ALX Icon -->
+        <!-- HEADER -->
         <div class="header">
-            <div class="alx-icon">ALX</div>
+            <div class="alx-icon" role="img" aria-label="ALX logo">ALX</div>
             <h1>Pace Predictor</h1>
         </div>
         <div class="subtitle">Predicts course completion likelihood based on weekly momentum</div>
 
-        <!-- STATS GRID with HOVER -->
+        <!-- STATS GRID -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Completion Likelihood</div>
@@ -479,7 +599,7 @@
             </div>
             <div class="stat-card">
                 <div class="stat-label">Current Momentum</div>
-                <div class="stat-value" id="momentumDisplay" style="color:#e4e7f0;">—</div>
+                <div class="stat-value" id="momentumDisplay" style="color:#E2E8F0;">—</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Status</div>
@@ -487,7 +607,7 @@
             </div>
             <div class="stat-card">
                 <div class="stat-label">Items Completed</div>
-                <div class="stat-value" id="itemsDisplay" style="color:#e4e7f0;">0 / 27</div>
+                <div class="stat-value" id="itemsDisplay" style="color:#E2E8F0;">0 / 27</div>
             </div>
         </div>
 
@@ -511,14 +631,14 @@
         <div class="input-section">
             <div class="input-group">
                 <div class="input-field">
-                    <label>Current Week (1-14)</label>
-                    <input type="number" id="currentWeek" value="3" min="1" max="14">
+                    <label for="currentWeek">Current Week (1-14)</label>
+                    <input type="number" id="currentWeek" value="3" min="1" max="14" inputmode="numeric" />
                 </div>
                 <div class="input-field">
-                    <label>Items Completed This Week</label>
-                    <input type="number" id="itemsThisWeek" value="2" min="0" max="10" step="0.5">
+                    <label for="itemsThisWeek">Items Completed This Week</label>
+                    <input type="number" id="itemsThisWeek" value="2" min="0" max="10" step="0.5" inputmode="decimal" />
                 </div>
-                <button class="btn" onclick="updateModel()">Update</button>
+                <button class="btn" id="updateBtn" aria-label="Update prediction">Update</button>
             </div>
         </div>
 
@@ -537,12 +657,12 @@
                 <div class="history-item">
                     <span class="week">Week 1</span>
                     <span class="momentum">Momentum: 100%</span>
-                    <span class="likelihood" style="color:#39ff14;">100%</span>
+                    <span class="likelihood" style="color:#4ADE80;">100%</span>
                 </div>
                 <div class="history-item">
                     <span class="week">Week 2</span>
                     <span class="momentum">Momentum: 75%</span>
-                    <span class="likelihood" style="color:#fbbf24;">85%</span>
+                    <span class="likelihood" style="color:#FBBF24;">85%</span>
                 </div>
             </div>
         </div>
@@ -657,20 +777,20 @@
             const container = document.getElementById('historyList');
             const history = state.weeklyHistory;
             if (history.length === 0) {
-                container.innerHTML = '<div style="color:#7a8ba8;text-align:center;padding:20px;">No data yet</div>';
+                container.innerHTML = '<div style="color:#8896B8;text-align:center;padding:20px;">No data yet</div>';
                 return;
             }
             container.innerHTML = history.map((h, i) => {
                 const isLast = i === history.length - 1;
-                const color = h.likelihood >= 85 ? '#39ff14' : h.likelihood >= 70 ? '#fbbf24' : '#f87171';
+                const color = h.likelihood >= 85 ? '#4ADE80' : h.likelihood >= 70 ? '#FBBF24' : '#F87171';
                 const momentum = calculateMomentum(h.items);
                 return `
-                    <div class="history-item" style="${isLast ? 'border-left-color: #39ff14;' : ''}">
-                        <span class="week">Week ${h.week}</span>
-                        <span class="momentum">Momentum: ${Math.round(momentum)}%</span>
-                        <span class="likelihood" style="color:${color};">${h.likelihood}%</span>
-                    </div>
-                `;
+                            <div class="history-item" style="${isLast ? 'border-left-color: #4ADE80;' : ''}">
+                                <span class="week">Week ${h.week}</span>
+                                <span class="momentum">Momentum: ${Math.round(momentum)}%</span>
+                                <span class="likelihood" style="color:${color};">${h.likelihood}%</span>
+                            </div>
+                        `;
             }).join('');
         }
 
@@ -705,22 +825,59 @@
         }
 
         // ============================================================
-        //  INIT
+        //  INIT & EVENT BINDING
         // ============================================================
 
+        // Update on button click (touch & mouse)
+        document.getElementById('updateBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            updateModel();
+        });
+
+        // Update on Enter key (with passive listener for mobile)
         document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') updateModel();
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    updateModel();
+                    this.blur(); // Dismiss keyboard on mobile
+                }
+            });
+            // Debounced update on input change for better UX
+            input.addEventListener('change', function() {
+                // Only update if value is valid
+                if (this.value !== '' && !isNaN(parseFloat(this.value))) {
+                    updateModel();
+                }
             });
         });
 
+        // Touch feedback for stats cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.style.borderColor = '#4ADE80';
+            }, { passive: true });
+            card.addEventListener('touchend', function() {
+                this.style.borderColor = '#1E2A45';
+            }, { passive: true });
+        });
+
+        // Load saved state or init
         if (!loadState()) {
             updateModel();
         }
 
-        console.log('📊 ALX Pace Predictor loaded!');
-        console.log('🎨 Theme: Neon Green + Navy Blue');
-        console.log('✨ Stats cards have hover effects.');
+        // Handle orientation change & resize (debounced)
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                // Re-render history to adjust layout if needed
+                renderHistory();
+            }, 250);
+        }, { passive: true });
+
+        console.log('📊 ALX Pace Predictor loaded - Mobile optimized.');
     </script>
 </body>
 </html>
