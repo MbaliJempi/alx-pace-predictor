@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>ALX Pace - Completion Predictor</title>
 
-    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111B2E'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%23E2E8F0'>ALX</text></svg>" />
 
     <style>
-        /* --- RESET & BASE --- */
         * {
             margin: 0;
             padding: 0;
@@ -79,7 +77,6 @@
             font-weight: 400;
         }
 
-        /* --- DATE SECTION --- */
         .date-section {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -114,7 +111,6 @@
             color: #8896B8;
         }
 
-        /* --- STATS GRID --- */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -161,7 +157,6 @@
         .stat-value.medium { color: #FBBF24; }
         .stat-value.low { color: #F87171; }
 
-        /* --- PROGRESS BAR --- */
         .progress-section {
             margin: 20px 0;
         }
@@ -203,7 +198,156 @@
             margin-top: 4px;
         }
 
-        /* --- INPUT SECTION --- */
+        .week-selector {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .week-selector label {
+            font-size: 13px;
+            color: #8896B8;
+            font-weight: 500;
+        }
+
+        .week-selector input {
+            width: 70px;
+            padding: 6px 10px;
+            background: #111B2E;
+            border: 1px solid #1E2A45;
+            border-radius: 8px;
+            color: #E2E8F0;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .week-selector input:focus {
+            outline: none;
+            border-color: #4ADE80;
+        }
+
+        .week-selector .week-info {
+            font-size: 12px;
+            color: #4A5A7A;
+            margin-left: 4px;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 12px;
+        }
+
+        .course-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #111B2E;
+            border-radius: 8px;
+            border: 1px solid #1E2A45;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .course-item:active {
+            transform: scale(0.98);
+        }
+
+        .course-item.completed {
+            border-color: #4ADE80;
+            background: rgba(74, 222, 128, 0.08);
+            opacity: 0.8;
+            cursor: default;
+        }
+
+        .course-item.completed .course-name {
+            color: #4ADE80;
+            text-decoration: line-through;
+        }
+
+        .course-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4ADE80;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .course-item.completed input[type="checkbox"] {
+            cursor: default;
+            opacity: 0.6;
+        }
+
+        .course-item .course-name {
+            font-size: 13px;
+            color: #CBD5E1;
+            flex: 1;
+            transition: color 0.2s;
+        }
+
+        .course-item .course-type {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: #1E2A45;
+            color: #8896B8;
+            flex-shrink: 0;
+        }
+
+        .course-item .course-type.module { background: #1a2a4a; color: #6a8aba; }
+        .course-item .course-type.lesson { background: #1a2a3a; color: #7a8a9a; }
+        .course-item .course-type.check { background: #2a2a1a; color: #baba6a; }
+        .course-item .course-type.test { background: #2a1a1a; color: #ba7a6a; }
+
+        .week-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: #4ADE80;
+            border: none;
+            border-radius: 8px;
+            color: #0B1424;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+            background: #22C55E;
+        }
+
+        .btn.secondary {
+            background: #2A3A5C;
+            color: #E2E8F0;
+        }
+
+        .btn.secondary:active {
+            background: #1E2A45;
+        }
+
+        .btn.danger {
+            background: #7F1D1D;
+            color: #F87171;
+        }
+
+        .btn.danger:active {
+            background: #5C1414;
+        }
+
         .input-section {
             background: #0B1424;
             border-radius: 12px;
@@ -248,7 +392,7 @@
             border-color: #4ADE80;
         }
 
-        .btn {
+        .btn-primary {
             width: 100%;
             padding: 12px;
             background: #4ADE80;
@@ -262,12 +406,11 @@
             touch-action: manipulation;
         }
 
-        .btn:active {
+        .btn-primary:active {
             transform: scale(0.97);
             background: #22C55E;
         }
 
-        /* --- RECOMMENDATION --- */
         .recommendation {
             margin-top: 16px;
             padding: 14px 16px;
@@ -278,7 +421,6 @@
             color: #CBD5E1;
         }
 
-        /* --- HISTORY --- */
         .history-section {
             margin-top: 20px;
         }
@@ -323,7 +465,6 @@
             font-size: 12px;
         }
 
-        /* --- STATUS BADGE --- */
         .status-badge {
             display: inline-block;
             padding: 3px 12px;
@@ -345,7 +486,6 @@
             color: #F87171;
         }
 
-        /* --- SCROLLBAR --- */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -361,7 +501,6 @@
             background: #4ADE80;
         }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 400px) {
             body { padding: 10px; }
             .container { padding: 16px 14px; border-radius: 12px; }
@@ -373,11 +512,8 @@
             .subtitle { font-size: 12px; margin-left: 46px; }
             .date-section { grid-template-columns: 1fr 1fr; gap: 8px; }
             .date-card .date-value { font-size: 13px; }
-            .input-section { padding: 12px; }
-            .input-field input { font-size: 15px; padding: 8px 12px; }
-            .btn { font-size: 15px; padding: 10px; }
-            .history-item { font-size: 12px; padding: 8px 12px; }
-            .recommendation { font-size: 13px; padding: 12px 14px; }
+            .course-item { padding: 6px 10px; }
+            .course-item .course-name { font-size: 12px; }
         }
 
         @media (min-width: 600px) {
@@ -392,7 +528,8 @@
             .subtitle { font-size: 14px; margin-left: 58px; }
             .input-group { flex-direction: row; gap: 16px; }
             .input-field { flex: 1; }
-            .btn { width: auto; padding: 8px 28px; align-self: flex-end; height: 42px; }
+            .btn-primary { width: auto; padding: 8px 28px; align-self: flex-end; height: 42px; }
+            .course-list { grid-template-columns: 1fr 1fr; }
             .stat-card:hover { border-color: #3A4E7A; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
             .history-item:hover { border-left-color: #4ADE80; }
         }
@@ -404,6 +541,7 @@
             .stat-value { font-size: 32px; }
             h1 { font-size: 30px; }
             .subtitle { font-size: 15px; }
+            .course-list { grid-template-columns: 1fr 1fr 1fr; }
         }
 
         @media (max-height: 500px) and (orientation: landscape) {
@@ -415,15 +553,9 @@
             .date-section { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
             .date-card { padding: 8px 10px; }
             .date-card .date-value { font-size: 12px; }
-            .header { margin-bottom: 0; }
-            .subtitle { margin-bottom: 12px; font-size: 11px; }
-            .progress-section { margin: 12px 0; }
-            .input-section { padding: 12px; margin: 12px 0; }
-            .input-group { flex-direction: row; gap: 10px; }
-            .input-field input { padding: 6px 10px; font-size: 14px; }
-            .btn { padding: 6px 16px; height: 34px; font-size: 14px; width: auto; }
-            .recommendation { padding: 10px 14px; font-size: 12px; margin-top: 10px; }
-            .history-item { padding: 6px 10px; font-size: 11px; }
+            .course-list { max-height: 150px; grid-template-columns: 1fr 1fr; }
+            .course-item { padding: 4px 8px; }
+            .course-item .course-name { font-size: 11px; }
         }
 
         @media (prefers-color-scheme: dark) {
@@ -435,6 +567,7 @@
             .history-item { background: #0B1424; }
             .recommendation { background: #0B1424; }
             .date-card { background: #0B1424; border-color: #1E2A45; }
+            .course-item { background: #111B2E; border-color: #1E2A45; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -452,7 +585,7 @@
             <div class="alx-icon" role="img" aria-label="ALX logo">ALX</div>
             <h1>Pace Predictor</h1>
         </div>
-        <div class="subtitle">Predicts course completion likelihood based on weekly momentum</div>
+        <div class="subtitle">Track weekly progress and predict completion likelihood</div>
 
         <!-- DATE SECTION -->
         <div class="date-section">
@@ -477,7 +610,7 @@
                 <div class="stat-value high" id="likelihoodDisplay">100%</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Current Momentum</div>
+                <div class="stat-label">Overall Momentum</div>
                 <div class="stat-value" id="momentumDisplay" style="color:#E2E8F0;">—</div>
             </div>
             <div class="stat-card">
@@ -506,6 +639,23 @@
             </div>
         </div>
 
+        <!-- WEEKLY COURSE CHECKLIST -->
+        <div class="input-section">
+            <div class="week-selector">
+                <label for="weekSelect">📚 Week:</label>
+                <input type="number" id="weekSelect" value="1" min="1" max="14" />
+                <span class="week-info" id="weekInfo">0 items available</span>
+                <span class="week-info" id="weekProgress">0/0 completed</span>
+            </div>
+            <div class="course-list" id="courseList">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="week-actions">
+                <button class="btn" id="markAllBtn">✓ Mark All Complete</button>
+                <button class="btn secondary" id="unmarkAllBtn">↺ Unmark All</button>
+            </div>
+        </div>
+
         <!-- INPUT SECTION -->
         <div class="input-section">
             <div class="input-group">
@@ -517,17 +667,13 @@
                     <label for="currentWeek">Current Week (1-14)</label>
                     <input type="number" id="currentWeek" value="3" min="1" max="14" inputmode="numeric" />
                 </div>
-                <div class="input-field">
-                    <label for="itemsThisWeek">Items Completed This Week</label>
-                    <input type="number" id="itemsThisWeek" value="2" min="0" max="10" step="0.5" inputmode="decimal" />
-                </div>
-                <button class="btn" id="updateBtn" aria-label="Update prediction">Update</button>
+                <button class="btn-primary" id="updateBtn" aria-label="Update prediction">Update Prediction</button>
             </div>
         </div>
 
         <!-- RECOMMENDATION -->
         <div id="recommendation" class="recommendation">
-            💡 Complete at least 2 items per week to stay on track for completion.
+            💡 Complete all available items each week to stay on track.
         </div>
 
         <!-- HISTORY -->
@@ -539,13 +685,8 @@
             <div id="historyList">
                 <div class="history-item">
                     <span class="week">Week 1</span>
-                    <span class="momentum">Momentum: 100%</span>
+                    <span class="momentum">Items: 0/0</span>
                     <span class="likelihood" style="color:#4ADE80;">100%</span>
-                </div>
-                <div class="history-item">
-                    <span class="week">Week 2</span>
-                    <span class="momentum">Momentum: 75%</span>
-                    <span class="likelihood" style="color:#FBBF24;">85%</span>
                 </div>
             </div>
         </div>
@@ -553,37 +694,139 @@
 
     <script>
         // ============================================================
-        //  CORE MODEL
+        //  COURSE DATA - Based on ALX Pace Roadmap
+        //  Each week has a specific set of items with max count
         // ============================================================
 
-        const TOTAL_ITEMS = 27;
+        const COURSE_ITEMS = {
+            1: [
+                { id: 'w1-1', name: 'Welcome to the Data Analytics Program!', type: 'lesson' },
+                { id: 'w1-2', name: 'End of Module: Welcome to the Data Analytics Program!', type: 'module' },
+                { id: 'w1-3', name: 'Introduction to Data and AI Literacy Foundations', type: 'lesson' },
+                { id: 'w1-4', name: 'End of Module: Introduction to Data and AI Literacy Foundations', type: 'module' },
+                { id: 'w1-5', name: 'An Introduction to Data and Data Analytics', type: 'lesson' },
+                { id: 'w1-6', name: 'Check Your Understanding: Introduction to Data and Data Analytics', type: 'check' }
+            ],
+            2: [
+                { id: 'w2-1', name: 'Ways of Work', type: 'lesson' },
+                { id: 'w2-2', name: 'Check Your Understanding: Ways of Work', type: 'check' },
+                { id: 'w2-3', name: 'Graded Test: Ways of Work', type: 'test' },
+                { id: 'w2-4', name: 'Generative AI in Data Practice', type: 'lesson' },
+                { id: 'w2-5', name: 'Check Your Understanding: Generative AI in Data Practice', type: 'check' },
+                { id: 'w2-6', name: 'Graded Test: Generative AI In Data Practice', type: 'test' }
+            ],
+            3: [
+                { id: 'w3-1', name: 'Data Visualization Fundamentals', type: 'lesson' },
+                { id: 'w3-2', name: 'Check Your Understanding: Data Visualization', type: 'check' },
+                { id: 'w3-3', name: 'Graded Test: Data Visualization', type: 'test' }
+            ],
+            4: [
+                { id: 'w4-1', name: 'Statistical Analysis Basics', type: 'lesson' },
+                { id: 'w4-2', name: 'Check Your Understanding: Statistics', type: 'check' },
+                { id: 'w4-3', name: 'Graded Test: Statistical Analysis', type: 'test' }
+            ],
+            5: [
+                { id: 'w5-1', name: 'Python for Data Analytics', type: 'lesson' },
+                { id: 'w5-2', name: 'Check Your Understanding: Python', type: 'check' },
+                { id: 'w5-3', name: 'Graded Test: Python for Data Analytics', type: 'test' }
+            ],
+            6: [
+                { id: 'w6-1', name: 'Data Wrangling Techniques', type: 'lesson' },
+                { id: 'w6-2', name: 'Check Your Understanding: Data Wrangling', type: 'check' },
+                { id: 'w6-3', name: 'Graded Test: Data Wrangling', type: 'test' }
+            ],
+            7: [
+                { id: 'w7-1', name: 'SQL for Data Analysis', type: 'lesson' },
+                { id: 'w7-2', name: 'Check Your Understanding: SQL', type: 'check' },
+                { id: 'w7-3', name: 'Graded Test: SQL for Data Analysis', type: 'test' }
+            ],
+            8: [
+                { id: 'w8-1', name: 'Business Intelligence Concepts', type: 'lesson' },
+                { id: 'w8-2', name: 'Check Your Understanding: BI', type: 'check' },
+                { id: 'w8-3', name: 'Graded Test: Business Intelligence', type: 'test' }
+            ],
+            9: [
+                { id: 'w9-1', name: 'Machine Learning Introduction', type: 'lesson' },
+                { id: 'w9-2', name: 'Check Your Understanding: ML', type: 'check' },
+                { id: 'w9-3', name: 'Graded Test: Machine Learning', type: 'test' }
+            ],
+            10: [
+                { id: 'w10-1', name: 'Capstone Project Planning', type: 'lesson' },
+                { id: 'w10-2', name: 'Check Your Understanding: Capstone Planning', type: 'check' }
+            ],
+            11: [
+                { id: 'w11-1', name: 'Capstone Project Execution', type: 'lesson' },
+                { id: 'w11-2', name: 'Check Your Understanding: Capstone Execution', type: 'check' }
+            ],
+            12: [
+                { id: 'w12-1', name: 'Capstone Project Review', type: 'lesson' },
+                { id: 'w12-2', name: 'Check Your Understanding: Capstone Review', type: 'check' }
+            ],
+            13: [
+                { id: 'w13-1', name: 'Final Presentation Preparation', type: 'lesson' },
+                { id: 'w13-2', name: 'Check Your Understanding: Final Presentation', type: 'check' }
+            ],
+            14: [
+                { id: 'w14-1', name: 'Course Completion & Graduation', type: 'lesson' },
+                { id: 'w14-2', name: 'Final Assessment', type: 'test' }
+            ]
+        };
+
+        // Calculate total items across all weeks
+        const TOTAL_ITEMS = Object.values(COURSE_ITEMS).reduce((sum, items) => sum + items.length, 0);
         const TOTAL_WEEKS = 14;
         const TARGET_PER_WEEK = TOTAL_ITEMS / TOTAL_WEEKS;
         const DECAY_FACTOR = 0.15;
 
+        // ============================================================
+        //  STATE
+        // ============================================================
+
+        // completedItems: { itemId: weekNumber }
+        let completedItems = {};
         let state = {
             startDate: null,
             currentWeek: 3,
-            itemsCompleted: 4,
-            weeklyHistory: [
-                { week: 1, items: 2 },
-                { week: 2, items: 2 }
-            ],
+            weeklyHistory: [],
             likelihood: 100
         };
 
         // ============================================================
-        //  DATE FUNCTIONS
+        //  CORE FUNCTIONS
         // ============================================================
+
+        function getItemsForWeek(week) {
+            return COURSE_ITEMS[week] || [];
+        }
+
+        function getMaxItemsForWeek(week) {
+            return getItemsForWeek(week).length;
+        }
+
+        function getCompletedCountForWeek(week) {
+            let count = 0;
+            for (const [itemId, w] of Object.entries(completedItems)) {
+                if (w === week) count++;
+            }
+            return count;
+        }
+
+        function getTotalCompleted() {
+            return Object.keys(completedItems).length;
+        }
+
+        function isItemCompleted(itemId) {
+            return completedItems[itemId] !== undefined;
+        }
+
+        function getItemWeek(itemId) {
+            return completedItems[itemId] || null;
+        }
 
         function formatDate(date) {
             if (!date) return 'Not set';
             const d = new Date(date);
-            return d.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         }
 
         function calculateTargetEndDate(startDate) {
@@ -595,325 +838,76 @@
 
         function calculatePredictedEndDate(startDate, currentWeek, itemsCompleted) {
             if (!startDate) return null;
-            
             const avgPerWeek = currentWeek > 0 ? itemsCompleted / currentWeek : 0;
             if (avgPerWeek === 0) return calculateTargetEndDate(startDate);
-            
             const remainingItems = Math.max(TOTAL_ITEMS - itemsCompleted, 0);
             const weeksNeeded = remainingItems / avgPerWeek;
-            
             const d = new Date(startDate);
             d.setDate(d.getDate() + (currentWeek * 7) + Math.round(weeksNeeded * 7));
             return d;
         }
 
         // ============================================================
-        //  CUMULATIVE LIKELIHOOD - Based on ALL weeks since start date
+        //  LIKELIHOOD CALCULATION - Based on ALL weeks
         // ============================================================
 
-        /**
-         * Calculate completion likelihood based on ALL weeks that have passed
-         * Uses cumulative performance across the entire course duration
-         */
         function calculateLikelihoodFromAllWeeks(weeklyHistory, currentWeek) {
             if (!weeklyHistory || weeklyHistory.length === 0) return 100;
-            
-            // Calculate total items completed so far
+
             let totalItems = 0;
             let totalExpectedItems = 0;
             let totalDeficit = 0;
-            let weeksWithData = 0;
-            
-            // For each week that has passed, calculate the cumulative deficit
+
             for (let w = 1; w <= currentWeek; w++) {
-                // Find if we have data for this week
                 const weekData = weeklyHistory.find(h => h.week === w);
                 const itemsCompleted = weekData ? (weekData.items || 0) : 0;
+                const maxItems = getMaxItemsForWeek(w);
                 
-                // Expected items for this week
-                const expectedItems = TARGET_PER_WEEK;
+                // Expected items for this week (target is to complete all)
+                const expectedItems = maxItems;
                 
-                // Calculate deficit for this week
+                // Calculate deficit for this week (items not completed)
                 const deficit = Math.max(expectedItems - itemsCompleted, 0);
                 totalDeficit += deficit;
                 totalItems += itemsCompleted;
                 totalExpectedItems += expectedItems;
-                weeksWithData++;
             }
-            
-            // If no data, return 100%
-            if (weeksWithData === 0) return 100;
-            
-            // Calculate the likelihood based on cumulative deficit
+
+            if (totalExpectedItems === 0) return 100;
+
+            // Calculate likelihood based on cumulative deficit
             // Each missed item reduces likelihood by 15%
             const penalty = totalDeficit * DECAY_FACTOR * 100;
             let likelihood = Math.max(100 - penalty, 0);
-            
-            // If the learner is ahead (total items > expected), cap at 100%
+
+            // If learner completed all items, cap at 100%
             if (totalItems >= totalExpectedItems) {
                 likelihood = 100;
             }
-            
+
             return Math.round(Math.max(likelihood, 0));
         }
 
-        /**
-         * Calculate overall momentum across ALL weeks
-         */
         function calculateOverallMomentum(weeklyHistory, currentWeek) {
             if (!weeklyHistory || weeklyHistory.length === 0) return 0;
-            
+
             let totalItems = 0;
-            let weeksWithData = 0;
-            
+            let totalMaxItems = 0;
+
             for (let w = 1; w <= currentWeek; w++) {
                 const weekData = weeklyHistory.find(h => h.week === w);
-                if (weekData) {
-                    totalItems += weekData.items || 0;
-                    weeksWithData++;
-                }
+                const itemsCompleted = weekData ? (weekData.items || 0) : 0;
+                const maxItems = getMaxItemsForWeek(w);
+                totalItems += itemsCompleted;
+                totalMaxItems += maxItems;
             }
-            
-            if (weeksWithData === 0) return 0;
-            
-            const avgItemsPerWeek = totalItems / weeksWithData;
-            return Math.min((avgItemsPerWeek / TARGET_PER_WEEK) * 100, 100);
-        }
 
-        /**
-         * Calculate momentum for a specific week (for display)
-         */
-        function calculateWeeklyMomentum(itemsThisWeek) {
-            return Math.min((itemsThisWeek / TARGET_PER_WEEK) * 100, 100);
+            if (totalMaxItems === 0) return 0;
+            
+            const completionRate = totalItems / totalMaxItems;
+            return Math.min(completionRate * 100, 100);
         }
 
         function getStatus(likelihood, progress) {
             if (likelihood >= 85 && progress >= 0.2) return { label: 'On Track', class: 'on-track' };
-            if (likelihood >= 70) return { label: 'On Watch', class: 'watch' };
-            return { label: 'At Risk', class: 'risk' };
-        }
-
-        function getRecommendation(likelihood, overallMomentum, predictedEndDate, targetEndDate) {
-            if (likelihood >= 100) return '✅ Excellent pace! You\'re on track to complete the course.';
-            if (likelihood >= 85) return '📈 Good momentum. Keep completing at least 2 items per week.';
-            if (likelihood >= 70) {
-                const neededItems = Math.round(TARGET_PER_WEEK * 2);
-                return `⚠️ You're falling behind. Need ${neededItems} items per week to recover.`;
-            }
-            return `🚨 Critical: Increase your pace to ${Math.round(TARGET_PER_WEEK * 2)} items per week. Consider adjusting your schedule.`;
-        }
-
-        // ============================================================
-        //  UI UPDATE
-        // ============================================================
-
-        function updateModel() {
-            const startDateInput = document.getElementById('startDate').value;
-            const startDate = startDateInput ? new Date(startDateInput) : null;
-            
-            const week = parseInt(document.getElementById('currentWeek').value) || 3;
-            const itemsThisWeek = parseFloat(document.getElementById('itemsThisWeek').value) || 0;
-
-            // Update weekly history
-            const existingEntry = state.weeklyHistory.find(h => h.week === week);
-            if (existingEntry) {
-                existingEntry.items = itemsThisWeek;
-            } else {
-                state.weeklyHistory.push({ week, items: itemsThisWeek });
-            }
-
-            // Sort history by week
-            state.weeklyHistory.sort((a, b) => a.week - b.week);
-
-            state.startDate = startDate;
-            state.currentWeek = week;
-
-            // Calculate total items from history
-            let totalItems = 0;
-            state.weeklyHistory.forEach(h => totalItems += h.items || 0);
-            state.itemsCompleted = Math.min(totalItems, TOTAL_ITEMS);
-            
-            // --- NEW: Calculate likelihood from ALL weeks ---
-            const newLikelihood = calculateLikelihoodFromAllWeeks(state.weeklyHistory, week);
-            state.likelihood = newLikelihood;
-            
-            // Calculate overall momentum from ALL weeks
-            const overallMomentum = calculateOverallMomentum(state.weeklyHistory, week);
-            
-            const progress = (state.itemsCompleted / TOTAL_ITEMS) * 100;
-
-            // Update Date Displays
-            document.getElementById('startDateDisplay').textContent = formatDate(startDate);
-            
-            const targetEnd = calculateTargetEndDate(startDate);
-            document.getElementById('targetEndDateDisplay').textContent = formatDate(targetEnd);
-            if (targetEnd) {
-                document.getElementById('targetEndDateDisplay').style.color = '#8896B8';
-            }
-
-            const predictedEnd = calculatePredictedEndDate(startDate, week, state.itemsCompleted);
-            document.getElementById('predictedEndDateDisplay').textContent = formatDate(predictedEnd);
-            if (predictedEnd) {
-                if (targetEnd && predictedEnd <= targetEnd) {
-                    document.getElementById('predictedEndDateDisplay').style.color = '#4ADE80';
-                } else if (targetEnd) {
-                    document.getElementById('predictedEndDateDisplay').style.color = '#FBBF24';
-                } else {
-                    document.getElementById('predictedEndDateDisplay').style.color = '#FBBF24';
-                }
-            }
-
-            // Likelihood
-            const likelihoodEl = document.getElementById('likelihoodDisplay');
-            likelihoodEl.textContent = newLikelihood + '%';
-            likelihoodEl.className = 'stat-value ' + (newLikelihood >= 85 ? 'high' : newLikelihood >= 70 ? 'medium' : 'low');
-
-            // Momentum - now showing overall momentum
-            document.getElementById('momentumDisplay').textContent = Math.round(overallMomentum) + '%';
-
-            // Items
-            document.getElementById('itemsDisplay').textContent = `${state.itemsCompleted} / ${TOTAL_ITEMS}`;
-
-            // Progress
-            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
-            document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
-
-            // Status
-            const status = getStatus(newLikelihood, progress / 100);
-            document.getElementById('statusDisplay').innerHTML =
-                `<span class="status-badge ${status.class}">${status.label}</span>`;
-
-            // Recommendation
-            document.getElementById('recommendation').textContent = getRecommendation(
-                newLikelihood, 
-                overallMomentum,
-                predictedEnd,
-                targetEnd
-            );
-
-            renderHistory();
-            saveState();
-        }
-
-        function renderHistory() {
-            const container = document.getElementById('historyList');
-            const history = state.weeklyHistory;
-            if (history.length === 0) {
-                container.innerHTML = '<div style="color:#8896B8;text-align:center;padding:20px;">No data yet</div>';
-                return;
-            }
-            
-            // Calculate cumulative likelihood for each week
-            let cumulativeDeficit = 0;
-            
-            container.innerHTML = history.map((h, i) => {
-                const isLast = i === history.length - 1;
-                const items = h.items || 0;
-                
-                // Calculate cumulative deficit up to this week
-                const deficit = Math.max(TARGET_PER_WEEK - items, 0);
-                cumulativeDeficit += deficit;
-                
-                // Calculate likelihood based on cumulative deficit
-                const weekLikelihood = Math.max(100 - (cumulativeDeficit * DECAY_FACTOR * 100), 0);
-                const roundedLikelihood = Math.round(weekLikelihood);
-                
-                const color = roundedLikelihood >= 85 ? '#4ADE80' : roundedLikelihood >= 70 ? '#FBBF24' : '#F87171';
-                const weeklyMomentum = calculateWeeklyMomentum(items);
-                
-                return `
-                    <div class="history-item" style="${isLast ? 'border-left-color: #4ADE80;' : ''}">
-                        <span class="week">Week ${h.week}</span>
-                        <span class="momentum">Items: ${items} | Momentum: ${Math.round(weeklyMomentum)}%</span>
-                        <span class="likelihood" style="color:${color};">${roundedLikelihood}%</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // ============================================================
-        //  PERSISTENCE
-        // ============================================================
-
-        function saveState() {
-            try {
-                localStorage.setItem('alxPaceState', JSON.stringify(state));
-            } catch (e) { /* ignore */ }
-        }
-
-        function loadState() {
-            try {
-                const saved = localStorage.getItem('alxPaceState');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (parsed.weeklyHistory && parsed.weeklyHistory.length > 0) {
-                        state = parsed;
-                        
-                        if (state.startDate) {
-                            const dateStr = new Date(state.startDate).toISOString().split('T')[0];
-                            document.getElementById('startDate').value = dateStr;
-                        }
-                        
-                        document.getElementById('currentWeek').value = state.currentWeek || 3;
-                        const last = state.weeklyHistory[state.weeklyHistory.length - 1];
-                        if (last) {
-                            document.getElementById('itemsThisWeek').value = last.items || 2;
-                        }
-                        updateModel();
-                        return true;
-                    }
-                }
-            } catch (e) { /* ignore */ }
-            return false;
-        }
-
-        // ============================================================
-        //  INIT & EVENT BINDING
-        // ============================================================
-
-        document.getElementById('updateBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            updateModel();
-        });
-
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    updateModel();
-                    this.blur();
-                }
-            });
-            input.addEventListener('change', function() {
-                if (this.value !== '' && !isNaN(parseFloat(this.value))) {
-                    updateModel();
-                }
-            });
-        });
-
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('touchstart', function() {
-                this.style.borderColor = '#4ADE80';
-            }, { passive: true });
-            card.addEventListener('touchend', function() {
-                this.style.borderColor = '#1E2A45';
-            }, { passive: true });
-        });
-
-        if (!loadState()) {
-            updateModel();
-        }
-
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                renderHistory();
-            }, 250);
-        }, { passive: true });
-
-        console.log('📊 ALX Pace Predictor loaded - Likelihood based on ALL weeks since start date.');
-        console.log('📅 Start date and end date prediction added.');
-    </script>
-</body>
-</html>
+            if (likelihood
