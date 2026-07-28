@@ -4,71 +4,159 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ALX Pace - Completion Predictor</title>
+    
+    <!-- Favicon: Neon Green "ALX" on Navy Background -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1628'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%2339ff14'>ALX</text></svg>" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1628'/><text x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' text-anchor='middle' fill='%2339ff14'>ALX</text></svg>" />
+
     <style>
+        /* ----- RESET & BASE ----- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0e1a;
+            background: #0a1628;
             color: #e4e7f0;
-            padding: 20px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
+
+        /* ----- MAIN CONTAINER ----- */
         .container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
-            background: #141b2d;
-            border-radius: 20px;
+            background: #0f1f3a;
+            border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            border: 1px solid #2a3457;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            border: 1px solid #1a3355;
+            transition: border-color 0.3s ease;
         }
+
+        .container:hover {
+            border-color: #39ff14;
+        }
+
+        /* ----- HEADER with ALX Icon ----- */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .alx-icon {
+            width: 48px;
+            height: 48px;
+            background: #0a1628;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: #39ff14;
+            border: 2px solid #39ff14;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .alx-icon:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+
         h1 {
             font-size: 28px;
             font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #6c8cff, #a78bfa);
+            background: linear-gradient(135deg, #39ff14, #7dff6e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
         .subtitle {
-            color: #8892b0;
+            color: #7a8ba8;
             margin-bottom: 30px;
+            margin-left: 64px;
             font-size: 14px;
         }
+
+        /* ----- STATS GRID with HOVER ----- */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 18px;
             margin-bottom: 30px;
         }
+
         .stat-card {
-            background: #1a2340;
-            border-radius: 12px;
-            padding: 16px 20px;
-            border: 1px solid #2a3457;
+            background: #0a1628;
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1px solid #1a3355;
             text-align: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
         }
+
+        /* Hover Effect */
+        .stat-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: #39ff14;
+            box-shadow: 0 8px 30px rgba(57, 255, 20, 0.15), inset 0 0 30px rgba(57, 255, 20, 0.05);
+        }
+
+        /* Glow line on hover */
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #39ff14;
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+            border-radius: 4px;
+        }
+
+        .stat-card:hover::after {
+            width: 60%;
+        }
+
         .stat-label {
-            font-size: 12px;
-            color: #8892b0;
+            font-size: 11px;
+            color: #7a8ba8;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            transition: color 0.3s ease;
         }
+
+        .stat-card:hover .stat-label {
+            color: #39ff14;
+        }
+
         .stat-value {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 700;
             margin-top: 4px;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
         }
+
         .stat-value.high {
-            color: #34d399;
+            color: #39ff14;
         }
         .stat-value.medium {
             color: #fbbf24;
@@ -76,154 +164,255 @@
         .stat-value.low {
             color: #f87171;
         }
+
+        .stat-card:hover .stat-value {
+            transform: scale(1.05);
+        }
+
+        /* ----- PROGRESS BAR ----- */
         .progress-section {
             margin: 30px 0;
         }
-        .progress-bar-container {
-            background: #1a2340;
-            border-radius: 100px;
-            height: 12px;
-            overflow: hidden;
-            margin-top: 8px;
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
         }
+
+        .progress-header span:first-child {
+            color: #a0b4d0;
+        }
+        .progress-header span:last-child {
+            color: #39ff14;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            background: #0a1628;
+            border-radius: 100px;
+            height: 10px;
+            overflow: hidden;
+            border: 1px solid #1a3355;
+            transition: border-color 0.3s ease;
+        }
+
+        .progress-bar-container:hover {
+            border-color: #39ff14;
+        }
+
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #6c8cff, #a78bfa);
+            background: linear-gradient(90deg, #39ff14, #7dff6e);
             border-radius: 100px;
-            transition: width 0.5s ease;
+            transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             width: 0%;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
         }
+
         .progress-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
-            color: #8892b0;
+            font-size: 12px;
+            color: #4a5a7a;
             margin-top: 4px;
         }
+
+        /* ----- INPUT SECTION ----- */
         .input-section {
-            background: #1a2340;
-            border-radius: 12px;
+            background: #0a1628;
+            border-radius: 14px;
             padding: 24px;
             margin: 20px 0;
-            border: 1px solid #2a3457;
+            border: 1px solid #1a3355;
+            transition: all 0.3s ease;
         }
+
+        .input-section:hover {
+            border-color: #39ff14;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.05);
+        }
+
         .input-group {
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
             align-items: end;
         }
+
         .input-field {
             flex: 1;
             min-width: 130px;
         }
+
         .input-field label {
             display: block;
-            font-size: 13px;
-            color: #8892b0;
+            font-size: 12px;
+            color: #7a8ba8;
             margin-bottom: 6px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s ease;
         }
+
+        .input-field:hover label {
+            color: #39ff14;
+        }
+
         .input-field input {
             width: 100%;
             padding: 10px 14px;
-            background: #0a0e1a;
-            border: 1px solid #2a3457;
+            background: #0f1f3a;
+            border: 1px solid #1a3355;
             border-radius: 8px;
             color: #e4e7f0;
             font-size: 15px;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
         }
+
         .input-field input:focus {
             outline: none;
-            border-color: #6c8cff;
+            border-color: #39ff14;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.08);
         }
+
+        .input-field input:hover {
+            border-color: #2a4a6a;
+        }
+
         .btn {
-            padding: 10px 28px;
-            background: linear-gradient(135deg, #6c8cff, #a78bfa);
+            padding: 10px 32px;
+            background: linear-gradient(135deg, #39ff14, #2dcc10);
             border: none;
             border-radius: 8px;
-            color: white;
-            font-weight: 600;
+            color: #0a1628;
+            font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            transition: transform 0.15s, opacity 0.2s;
+            transition: all 0.3s ease;
             height: 42px;
             align-self: end;
+            letter-spacing: 0.5px;
         }
+
         .btn:hover {
-            transform: translateY(-1px);
-            opacity: 0.9;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(57, 255, 20, 0.3);
         }
+
         .btn:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
         }
+
+        /* ----- RECOMMENDATION ----- */
+        .recommendation {
+            margin-top: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            background: #0a1628;
+            border-left: 4px solid #39ff14;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #c0d0e0;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation:hover {
+            border-left-color: #7dff6e;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.05);
+        }
+
+        /* ----- HISTORY ----- */
         .history-section {
             margin-top: 24px;
         }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .history-header span:first-child {
+            font-weight: 600;
+            color: #c0d0e0;
+        }
+        .history-header span:last-child {
+            color: #7a8ba8;
+            font-size: 13px;
+        }
+
         .history-item {
             display: flex;
             justify-content: space-between;
             padding: 12px 16px;
-            background: #0a0e1a;
+            background: #0a1628;
             border-radius: 8px;
             margin-bottom: 6px;
             font-size: 14px;
-            border-left: 3px solid #6c8cff;
+            border-left: 3px solid #1a3355;
+            transition: all 0.3s ease;
         }
+
+        .history-item:hover {
+            border-left-color: #39ff14;
+            transform: translateX(4px);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.05);
+        }
+
         .history-item .week {
-            color: #8892b0;
+            color: #7a8ba8;
         }
         .history-item .likelihood {
             font-weight: 600;
         }
         .history-item .momentum {
-            color: #8892b0;
+            color: #7a8ba8;
         }
+
+        /* ----- STATUS BADGE ----- */
         .status-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 100px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
         }
+
         .status-badge.on-track {
-            background: #064e3b;
-            color: #34d399;
+            background: rgba(57, 255, 20, 0.15);
+            color: #39ff14;
+            border: 1px solid rgba(57, 255, 20, 0.3);
         }
+        .status-badge.on-track:hover {
+            background: rgba(57, 255, 20, 0.25);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
+        }
+
         .status-badge.watch {
-            background: #78350f;
+            background: rgba(251, 191, 36, 0.15);
             color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
         }
+        .status-badge.watch:hover {
+            background: rgba(251, 191, 36, 0.25);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+        }
+
         .status-badge.risk {
-            background: #7f1d1d;
+            background: rgba(248, 113, 113, 0.15);
             color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
         }
-        .recommendation {
-            margin-top: 16px;
-            padding: 16px 20px;
-            border-radius: 10px;
-            background: #0a0e1a;
-            border-left: 4px solid #6c8cff;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #e4e7f0;
+        .status-badge.risk:hover {
+            background: rgba(248, 113, 113, 0.25);
+            box-shadow: 0 0 20px rgba(248, 113, 113, 0.1);
         }
-        .embed-note {
-            margin-top: 20px;
-            padding: 16px 20px;
-            background: #1a2340;
-            border-radius: 10px;
-            border: 1px solid #2a3457;
-            font-size: 13px;
-            color: #8892b0;
-        }
-        .embed-note code {
-            background: #0a0e1a;
-            padding: 2px 8px;
-            border-radius: 4px;
-            color: #e4e7f0;
-            font-size: 12px;
-        }
+
+        /* ----- RESPONSIVE ----- */
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -235,14 +424,54 @@
                 width: 100%;
                 align-self: stretch;
             }
+            .header h1 {
+                font-size: 22px;
+            }
+            .alx-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            .subtitle {
+                margin-left: 0;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a1628;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a3355;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #39ff14;
         }
     </style>
 </head>
 <body>
     <div class="container" id="app">
-        <h1>📊 ALX Pace Predictor</h1>
+        <!-- HEADER with ALX Icon -->
+        <div class="header">
+            <div class="alx-icon">ALX</div>
+            <h1>Pace Predictor</h1>
+        </div>
         <div class="subtitle">Predicts course completion likelihood based on weekly momentum</div>
 
+        <!-- STATS GRID with HOVER -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Completion Likelihood</div>
@@ -262,8 +491,9 @@
             </div>
         </div>
 
+        <!-- PROGRESS BAR -->
         <div class="progress-section">
-            <div style="display:flex; justify-content:space-between; font-size:14px;">
+            <div class="progress-header">
                 <span>Curriculum Progress</span>
                 <span id="progressPercent">0%</span>
             </div>
@@ -277,6 +507,7 @@
             </div>
         </div>
 
+        <!-- INPUT SECTION -->
         <div class="input-section">
             <div class="input-group">
                 <div class="input-field">
@@ -287,24 +518,26 @@
                     <label>Items Completed This Week</label>
                     <input type="number" id="itemsThisWeek" value="2" min="0" max="10" step="0.5">
                 </div>
-                <button class="btn" onclick="updateModel()">Update Prediction</button>
+                <button class="btn" onclick="updateModel()">Update</button>
             </div>
         </div>
 
+        <!-- RECOMMENDATION -->
         <div id="recommendation" class="recommendation">
             💡 Complete at least 2 items per week to stay on track for completion.
         </div>
 
+        <!-- HISTORY -->
         <div class="history-section">
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                <span style="font-weight:600;">Weekly History</span>
-                <span style="color:#8892b0; font-size:13px;">Likelihood trend</span>
+            <div class="history-header">
+                <span>Weekly History</span>
+                <span>Likelihood trend</span>
             </div>
             <div id="historyList">
                 <div class="history-item">
                     <span class="week">Week 1</span>
                     <span class="momentum">Momentum: 100%</span>
-                    <span class="likelihood" style="color:#34d399;">100%</span>
+                    <span class="likelihood" style="color:#39ff14;">100%</span>
                 </div>
                 <div class="history-item">
                     <span class="week">Week 2</span>
@@ -312,11 +545,6 @@
                     <span class="likelihood" style="color:#fbbf24;">85%</span>
                 </div>
             </div>
-        </div>
-
-        <div class="embed-note">
-            💡 <strong>Bookmark this page</strong> to track your progress. 
-            Or <a href="#" id="embedLink" style="color:#6c8cff;text-decoration:none;">embed this predictor</a> into the ALX Pace page using the userscript.
         </div>
     </div>
 
@@ -422,21 +650,22 @@
             document.getElementById('recommendation').textContent = getRecommendation(newLikelihood, itemsThisWeek);
 
             renderHistory();
+            saveState();
         }
 
         function renderHistory() {
             const container = document.getElementById('historyList');
             const history = state.weeklyHistory;
             if (history.length === 0) {
-                container.innerHTML = '<div style="color:#8892b0;text-align:center;padding:20px;">No data yet</div>';
+                container.innerHTML = '<div style="color:#7a8ba8;text-align:center;padding:20px;">No data yet</div>';
                 return;
             }
             container.innerHTML = history.map((h, i) => {
                 const isLast = i === history.length - 1;
-                const color = h.likelihood >= 85 ? '#34d399' : h.likelihood >= 70 ? '#fbbf24' : '#f87171';
+                const color = h.likelihood >= 85 ? '#39ff14' : h.likelihood >= 70 ? '#fbbf24' : '#f87171';
                 const momentum = calculateMomentum(h.items);
                 return `
-                    <div class="history-item" style="${isLast ? 'border-left-color: #a78bfa;' : ''}">
+                    <div class="history-item" style="${isLast ? 'border-left-color: #39ff14;' : ''}">
                         <span class="week">Week ${h.week}</span>
                         <span class="momentum">Momentum: ${Math.round(momentum)}%</span>
                         <span class="likelihood" style="color:${color};">${h.likelihood}%</span>
@@ -446,16 +675,9 @@
         }
 
         // ============================================================
-        //  INIT
+        //  PERSISTENCE
         // ============================================================
 
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') updateModel();
-            });
-        });
-
-        // Save history to localStorage
         function saveState() {
             try {
                 localStorage.setItem('alxPaceState', JSON.stringify(state));
@@ -470,7 +692,6 @@
                     if (parsed.weeklyHistory && parsed.weeklyHistory.length > 0) {
                         state = parsed;
                         document.getElementById('currentWeek').value = state.currentWeek || 3;
-                        // Restore last week's items
                         const last = state.weeklyHistory[state.weeklyHistory.length - 1];
                         if (last) {
                             document.getElementById('itemsThisWeek').value = last.items || 2;
@@ -483,32 +704,23 @@
             return false;
         }
 
-        // Auto-save on update
-        const origUpdate = updateModel;
-        updateModel = function() {
-            origUpdate();
-            saveState();
-        };
+        // ============================================================
+        //  INIT
+        // ============================================================
 
-        // Load saved state or init
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') updateModel();
+            });
+        });
+
         if (!loadState()) {
             updateModel();
         }
 
-        // Embed instructions
-        document.getElementById('embedLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert(
-                'To embed this predictor on the ALX Pace page:\n\n' +
-                '1. Install Tampermonkey browser extension\n' +
-                '2. Create a new userscript with the code from:\n' +
-                '   https://github.com/your-username/alx-pace-predictor\n' +
-                '3. The widget will appear automatically on the ALX Pace page.'
-            );
-        });
-
         console.log('📊 ALX Pace Predictor loaded!');
-        console.log('Data is saved automatically in your browser.');
+        console.log('🎨 Theme: Neon Green + Navy Blue');
+        console.log('✨ Stats cards have hover effects.');
     </script>
 </body>
 </html>
